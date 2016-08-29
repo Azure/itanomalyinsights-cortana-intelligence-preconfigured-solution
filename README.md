@@ -12,13 +12,13 @@ Azure subscription for customization and further evaluation.
 Contents of this repository
 ---------------------------
 
--**Docs folder**:
+- **Docs folder**:
 Post-deployment instructions for this preconfigured solution.
 
--**Power BI Template folder**:
+- **Power BI Template folder**:
 Power BI desktop file (pbix) with template dashboard that you can connect to the preconfigured solution deployed pipeline.
 
--**Sample Data Generator folder**:
+- **Sample Data Generator folder**:
 Executable for sample data generator that allows you to push sample data through deployed pipeline.
 
 Feedback
