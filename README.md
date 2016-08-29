@@ -1,4 +1,5 @@
 Microsoft Cortana Intelligence
+
 IT Operations insights Preconfigured Solution
 
 Cortana Intelligence IT Operations Insights is a preconfigured solution that reduces the time that it takes for a line of business owner to perceive and get value from Cortana Intelligence based end-to-end IT operations solutions that are easy to try, deploy, and customize, so that customers can dream big and correlate these solutions to their particular scenarios. This preconfigured solution is based on a set of curated parts that include services, templates, samples and documentation that can be easily showcased within minutes without the need of installing any software or signing up for any services, and that can then be deployed into a customer’s Azure subscription for customization and further evaluation.
