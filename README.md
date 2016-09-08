@@ -1,7 +1,7 @@
-IT Operations insights Preconfigured Solution
+IT Anomaly insights Preconfigured Solution
 =============================================
 
-Microsoft Cortana Intelligence IT Operations Insights is a preconfigured solution that reduces the time 
+Microsoft Cortana Intelligence IT Anomaly Insights is a preconfigured solution that reduces the time 
 that it takes for a line of business owner to perceive and get value from Cortana Intelligence based end-to-end 
 IT operations solutions that are easy to try, deploy, and customize, so that customers can dream big and correlate 
 these solutions to their particular scenarios. This preconfigured solution is based on a set of curated parts that 
@@ -9,7 +9,7 @@ include services, templates, samples and documentation that can be easily showca
 of installing any software or signing up for any services, and that can then be deployed into a customer's 
 Azure subscription for customization and further evaluation.
 
-For additional information about IT Operations Insights, please visit the Cortana Intelligence Gallery [page](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b).
+For additional information about IT Anomaly Insights, please visit the Cortana Intelligence Gallery [page](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b).
 
 Contents of this repository
 ---------------------------
