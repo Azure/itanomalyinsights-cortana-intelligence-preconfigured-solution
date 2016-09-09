@@ -49,7 +49,7 @@ This section describes how to bring your own data to Azure. As long as the event
 Encoding: UTF-8
 Formatting: JSON
 Schema:
-...
+```
 {
 	"Host": "Hostname (required”",
 	"Metric": "Counter/metric name (required)",
@@ -57,7 +57,7 @@ Schema:
 	"Application": "Originating application of the event (optional)",
 	"Brand": "Originating brand name of the event (optional)"
 }
-...
+```
 
 The Azure Event Hub service is very generic, such that data can be posted to the hub in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is fed into it.
 This document does not describe how to ingest your data, but one can easily send events or data to an Azure Event Hub, using the Event Hub API.
