@@ -84,16 +84,16 @@ This section describes how to set up Power BI dashboard to visualize the output 
 > 
 > 2) Update the data source of the Power BI file.
 > - Make sure you have installed the latest version of [Power BI desktop](https://powerbi.microsoft.com/desktop).
-> - Download the Power BI desktop file for the solution from [here](). The initial visualizations are based on dummy data. Note: If you see an error massage, please make sure you have installed the latest version of Power BI Desktop.
+> - Download the Power BI desktop file for the solution from [here](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix). The initial visualizations are based on dummy data. Note: If you see an error massage, please make sure you have installed the latest version of Power BI Desktop.
 Once you open it, on the top of the file, click ‘Edit Queries’. In the pop out window, double click ‘Source’ on the right panel.
 > - In the pop out window, replace "Server" and "Database" with your own server and database names, and then click "OK". For server name, make sure you specify the port 1433 (YourSolutionName.database.windows.net, 1433). Ignore the warning messages that appear on the screen.
 > - In the next pop out window, you'll see two options on the left pane (Windows and Database). Click "Database", fill in your "Username" and "Password" (this is the username and password you entered when you first deployed the solution and created an Azure SQL database). In Select which level to apply these settings to, check database level option. Then click "Connect".
 > - Once you are guided back to the previous page, close the window. A message will pop out - click Apply. Lastly, click the Save button to save the changes. Your Power BI file has now established connection to the server. If your visualizations are empty, make sure you clear the selections on the visualizations to visualize all the data by clicking the eraser icon on the upper right corner of the legends. Use the refresh button to reflect new data on the visualizations. Initially, you will only see the seed data on your visualizations as the data factory is scheduled to refresh every 3 hours. After 3 hours, you will see new scores reflected in your visualizations when you refresh the data.
 > 
-> 3) (Optional) Publish the dashboard to Power BI online. Note that this step needs a Power BI account (or Office 365 account).
-> - Click "Publish" and few seconds later a window appears displaying "Publishing to Power BI Success!" with a green check mark. To find detailed instructions, see Publish from Power BI Desktop.
+> 3) (Optional) Publish the dashboard to [Power BI online](http://www.powerbi.com/). Note that this step needs a Power BI account (or Office 365 account).
+> - Click "Publish" and few seconds later a window appears displaying "Publishing to Power BI Success!" with a green check mark. To find detailed instructions, see [Publish from Power BI Desktop](https://support.powerbi.com/knowledgebase/articles/461278-publish-from-power-bi-desktop).
 > - To create a new dashboard: click the + sign next to the Dashboards section on the left pane. Enter the name "Demand Forecasting Demo" for this new dashboard.
 > 
 > 4) (Optional) Schedule refresh of the data source.
-> - To schedule refresh of the data, hover your mouse over the dataset, click   and then choose Schedule Refresh. Note: If you see a warning massage, click Edit Credentials and make sure your database credentials are the same as those described in step 1.
-> - Expand the Schedule Refresh section. Turn on "keep your data up-to-date". - Schedule the refresh based on your needs. To find more information, see Data refresh in Power BI.
+> - To schedule refresh of the data, hover your mouse over the dataset, click "..." and then choose **Schedule Refresh**. **Note:** If you see a warning massage, click **Edit Credentials** and make sure your database credentials are the same as those described in step 1.
+> - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
