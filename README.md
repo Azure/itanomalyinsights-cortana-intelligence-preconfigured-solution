@@ -26,7 +26,7 @@ Executable for sample data generator that allows you to push sample data through
 Feedback
 --------
 
-Have ideas for how we can improve our IT Operations Insights Preconfigured Solution? Give us [feedback](mailto:adpcs_support@microsoft.com)!
+Have ideas for how we can improve our IT Anomaly Insights Preconfigured Solution? Give us [feedback](mailto:adpcs_support@microsoft.com)!
 
 Code of Conduct
 ---------------
