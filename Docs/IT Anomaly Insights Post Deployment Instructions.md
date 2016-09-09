@@ -14,25 +14,25 @@ When the pipeline is deployed, various Azure services within Cortana Analytics S
 Data Source and Ingestion
 -------------------------
 ####Azure Event Hub
-The Azure Event Hub service is the recipient of the input data provided by the data source. The data source can be the data generator provided or any service that can send data to Azure Event Hub in the required format. Read more about it in the following section.
+The [Azure Event Hub](https://azure.microsoft.com/services/event-hubs/) service is the recipient of the input data provided by the data source. The data source can be the data generator provided or any service that can send data to Azure Event Hub in the required format. Read more about it in the following section.
 
 Data Preparation and Analysis
 -----------------------------
 ####Azure Stream Analytics
-The Azure Stream Analytics service is used to provide near real-time analytics on the input stream from the Azure Event Hub service and archiving all raw incoming events to the Azure Storage service for later processing by the Azure Data Factory service.
+The [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service is used to provide near real-time analytics on the input stream from the Azure Event Hub service and archiving all raw incoming events to the [Azure Storage](https://azure.microsoft.com/services/storage/) service for later processing by the [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service.
 
 ####Azure Data Factory
-The Azure Data Factory service orchestrates the movement and processing of data. The data factory is made up of pipelines and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets that will be sent to Azure Machine Learning - Anomaly Detection API for scoring and then publishes the results as follows.
+The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets that will be sent to Azure Machine Learning - Anomaly Detection API for scoring and then publishes the results as follows.
 
 Data Publishing
 ---------------
 ####Azure SQL Database Service
-The Azure SQL Database service is used to store (managed by Azure Data Factory) the anomaly detection scores received by the Azure Machine Learning service that will be consumed in the Power BI dashboard.
+The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store (managed by Azure Data Factory) the anomaly detection scores received by the Azure Machine Learning service that will be consumed in the [Power BI](https://powerbi.microsoft.com/) dashboard.
 
 Data Consumption
 ----------------
 ####Power BI
-The Power BI service is used to show a dashboard that contains aggregations provided by the Azure Stream Analytics service as well as anomaly detection score results stored in Azure SQL Database that were produced using the Azure Machine Learning service. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
+The [Power BI](https://powerbi.microsoft.com/) service is used to show a dashboard that contains aggregations provided by the [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service as well as anomaly detection score results stored in [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that were produced using the [Azure Machine Learning](https://azure.microsoft.com/services/machine-learning/) service. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
 
 Post Deployment Steps
 ---------------------
@@ -42,7 +42,7 @@ Below are the steps to get started with the deployed solution.
 > - **Step 3:** Lastly, visualize the results using Power BI dashboard.
 
 ####Synthetic Data Source
-You can use Data Generator (available in GitHub repository for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the Azure Event Hub service with data points, or events, that will be used in the rest of the pipeline flow.
+You can use Data Generator (available in the [GitHub repository](https://github.com/Azure/itanomalysinsights-cortana-intelligence-preconfigured-solution) for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the [Azure Event Hub](https://azure.microsoft.com/en-us/documentation/articles/cortana-analytics-technical-guide-demand-forecast/?tduid=%28ff7611aab34207ef35998cad0ae7b15b%29%28256380%29%282459594%29%28je6NUbpObpQ-tDK.bHRFEXOQuN7wy1uyeg%29%28%29) service with data points, or events, that will be used in the rest of the pipeline flow.
 The event generation application will populate the Azure Event Hub only while it's executing on your computer.
 
 ####How to bring your own data 
@@ -61,20 +61,20 @@ Schema:
 ```
 
 The Azure Event Hub service is very generic, such that data can be posted to the hub in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is fed into it.
-This document does not describe how to ingest your data, but one can easily send events or data to an Azure Event Hub, using the Event Hub API.
+This document does not describe how to ingest your data, but one can easily send events or data to an Azure Event Hub, using the [Event Hub API](https://azure.microsoft.com/en-us/documentation/articles/event-hubsevent-hubs-programming-guide/).
 
 Monitor Progress
 ----------------
 Once the data generator/ data source starts sending events, the pipeline begins to get hydrated and the different components of your solution start kicking into action following the commands issued by the Data Factory. There are multiple ways you can monitor the pipeline.
 > 1) **Check the input data populated in Azure Table Storage and Azure SQL Database.**
-The Stream Analytics job writes the raw incoming data to table storage and SQL database. If you click on Resource Group name in the CIQS portal, it will take you to your deployed solution in the Azure management portal. Once there, click on Tables. In the next panel, check if you see the two tables "asaEgressPartitions" and “asaEgress”. You can also check the if data is being populated in the tables using tools like Azure Storage Explorer. If you see these tables and data, it indicates that the raw data is successfully being generated on your computer and stored in table storage. 
+The Stream Analytics job writes the raw incoming data to table storage and SQL database. If you click on Resource Group name in the CIQS portal, it will take you to your deployed solution in the [Azure management portal](https://portal.azure.com/). Once there, click on Tables. In the next panel, check if you see the two tables "asaEgressPartitions" and “asaEgress”. You can also check the if data is being populated in the tables using tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being generated on your computer and stored in table storage. 
 You can also check the data being populated in SQL database by going to your Resource Group, and locating your database (ex: demo123456db ) and connecting to it using the SQL server username and password provided in the CIQS portal. Once connected, you can check “AdditionalInfo” table in the database and make sure it has records being populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
 >
 > 2) **Check the results output data from Azure SQL Database.**
 The last step of the pipeline is to write data (e.g. anomalies detected using Machine Learning API) into SQL Database table named “AdScoreResults”. You might have to wait for a minimum of 15 minutes for the output data to appear in table. Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults"). As your database grows, the number of rows in the table should increase.
 >
 > 3) **Check Azure Data Factory dashboard.**
-The Azure Data Factory service orchestrates the movement and processing of data. You can access your data factory from the Azure management portal resource group (e.x. demo12345adf) . If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline here.
+The Azure Data Factory service orchestrates the movement and processing of data. You can access your data factory from the Azure management portal resource group (e.x. demo12345adf) . If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
 Power BI Dashboard
 ------------------
@@ -83,8 +83,8 @@ This section describes how to set up Power BI dashboard to visualize the output 
 > 1) Get the database server name, database name, user name and password from the CIQS portal.
 > 
 > 2) Update the data source of the Power BI file.
-> - Make sure you have installed the latest version of Power BI desktop.
-> - Download the Power BI desktop file for the solution from here. The initial visualizations are based on dummy data. Note: If you see an error massage, please make sure you have installed the latest version of Power BI Desktop.
+> - Make sure you have installed the latest version of [Power BI desktop](https://powerbi.microsoft.com/desktop).
+> - Download the Power BI desktop file for the solution from [here](). The initial visualizations are based on dummy data. Note: If you see an error massage, please make sure you have installed the latest version of Power BI Desktop.
 Once you open it, on the top of the file, click ‘Edit Queries’. In the pop out window, double click ‘Source’ on the right panel.
 > - In the pop out window, replace "Server" and "Database" with your own server and database names, and then click "OK". For server name, make sure you specify the port 1433 (YourSolutionName.database.windows.net, 1433). Ignore the warning messages that appear on the screen.
 > - In the next pop out window, you'll see two options on the left pane (Windows and Database). Click "Database", fill in your "Username" and "Password" (this is the username and password you entered when you first deployed the solution and created an Azure SQL database). In Select which level to apply these settings to, check database level option. Then click "Connect".
