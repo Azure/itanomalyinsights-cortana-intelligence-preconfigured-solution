@@ -36,9 +36,9 @@ The Power BI service is used to show a dashboard that contains aggregations prov
 Post Deployment Steps
 ---------------------
 Below are the steps to get started with the deployed solution.
-> - Step 1: Once the solution is deployed successfully; you can start sending data into it.  The data source can be a simulated data source like sample data generator provided or you can bring your own data as described below. 
-> - Step 2: Monitor if data is flowing into your pipeline.
-> - Step 3: Lastly, visualize the results using Power BI dashboard.
+> - **Step 1:** Once the solution is deployed successfully; you can start sending data into it.  The data source can be a simulated data source like sample data generator provided or you can bring your own data as described below. 
+> - **Step 2:** Monitor if data is flowing into your pipeline.
+> - **Step 3:** Lastly, visualize the results using Power BI dashboard.
 
 ####Synthetic Data Source
 You can use Data Generator (available in GitHub repository for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the Azure Event Hub service with data points, or events, that will be used in the rest of the pipeline flow.
@@ -68,8 +68,10 @@ Once the data generator/ data source starts sending events, the pipeline begins 
 > 1) Check the input data populated in Azure Table Storage and Azure SQL Database.
 The Stream Analytics job writes the raw incoming data to table storage and SQL database. If you click on Resource Group name in the CIQS portal, it will take you to your deployed solution in the Azure management portal. Once there, click on Tables. In the next panel, check if you see the two tables "asaEgressPartitions" and “asaEgress”. You can also check the if data is being populated in the tables using tools like Azure Storage Explorer. If you see these tables and data, it indicates that the raw data is successfully being generated on your computer and stored in table storage. 
 You can also check the data being populated in SQL database by going to your Resource Group, and locating your database (ex: demo123456db ) and connecting to it using the SQL server username and password provided in the CIQS portal. Once connected, you can check “AdditionalInfo” table in the database and make sure it has records being populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
+>
 > 2) Check the results output data from Azure SQL Database.
-The last step of the pipeline is to write data (e.g. anomalies detected using Machine Learning API) into SQL Database table named “AdScoreResults”. You might have to wait for a minimum of 15 minutes for the output data to appear in table. Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults"). As your database grows, the number of rows in the table should increase. 
+The last step of the pipeline is to write data (e.g. anomalies detected using Machine Learning API) into SQL Database table named “AdScoreResults”. You might have to wait for a minimum of 15 minutes for the output data to appear in table. Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults"). As your database grows, the number of rows in the table should increase.
+>
 > 3) Check Azure Data Factory dashboard.
 The Azure Data Factory service orchestrates the movement and processing of data. You can access your data factory from the Azure management portal resource group (e.x. demo12345adf) . If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline here.
 
