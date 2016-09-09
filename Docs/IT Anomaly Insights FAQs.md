@@ -13,5 +13,3 @@ Here are the most frequently encountered issues when deploying the solution:
 
 Please, feel free to [contact us](adpcs_support@microsoft.com) with any additional questions you might have.
 Thanks!
-
-> Written with [StackEdit](https://stackedit.io/).
