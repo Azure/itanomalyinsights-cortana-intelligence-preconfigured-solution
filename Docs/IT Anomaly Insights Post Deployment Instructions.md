@@ -52,7 +52,7 @@ Formatting: JSON
 Schema:
 ```
 {
-	"Host": "Hostname (required”",
+	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
