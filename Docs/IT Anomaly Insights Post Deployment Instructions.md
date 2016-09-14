@@ -97,3 +97,53 @@ Once you open it, on the top of the file, click **‘Edit Queries’**. In the p
 > 4) (Optional) Schedule refresh of the data source.
 > - To schedule refresh of the data, hover your mouse over the dataset, click "..." and then choose **Schedule Refresh**. **Note:** If you see a warning massage, click **Edit Credentials** and make sure your database credentials are the same as those described in step 1.
 > - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
+
+Pipeline Health Monitoring
+--------------------------
+
+This section outlines the steps to monitor if data flowing into the pipeline is successfully scored. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage and passes that data to Machine Learning - Anomaly Detection API for scoring. Scoring results are then persisted in Azure SQL database. Metrics are tracked for every service call. Collected telemetry data is sent to Application Insights (AI) which allows customers to set up monitoring dashboards and alarms.
+
+Steps to set up a sample health dashboard are outlined below.
+> 1) The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
+>
+> 2) Navigate to portal.azure.com and search for the AI account noted above.
+>
+> 3) Once in the Application Insights blade, click on the "Metric Explorer" button.
+>
+> 4) You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
+>
+> 5) Pipeline health metrics will be listed under "Custom" section.
+>
+> 6) Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
+> The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
+
+Integrating IT Anomaly Insights Results with On-premise Systems
+---------------------------------------------------------------
+
+#### Overview
+IT Anomaly Insights PCS will publish Anomaly Detection results to Azure Service Bus Topic. This section covers steps to configure which anomalies will be published to the Service Bus Topic, as well as how to integrate with Service Bus Topics.
+
+#### Configuring Service Bus Topic Result Publishing
+Follow the instructions below to learn how to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) that will be published to Service Bus Topics.
+
+> 1. In Azure Portal navigate to the Resource Group bearing the name of your CIQS project. Find the Data Factory resource.
+>
+> 2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
+>
+> 3. Azure Data Factory pipeline definition will appear on the right-most blade. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
+> 
+> The default query is shown below and only publishes messages for level spikes. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) will be published to Service Bus.
+> ```SQL
+> SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1 
+> ```
+> 4. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
+
+#### Receiving Service Bus Topics Messages
+
+Three pieces of information are needed to start consuming Service Bus Topics messages: topic name, subscription name and Service Bus connection string. All three are provided under “Deployment summary” in CIQS.
+
+There is a wealth of documentation and code samples that show how to receive Service Bus messages from a topic subscription. The following Microsoft documentation [article](https://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-topics-subscriptions/) gives a quick overview and provides sample code which will help users integrate their services with Service Bus. 
+
+Service Bus Topics are also supported in Azure WebJobs (see [documentation](https://azure.microsoft.com/en-us/documentation/articles/websites-dotnet-webjobs-sdk-service-bus/)).
+
+Customers who do not have existing infrastructure are encouraged to try [Azure Functions](https://azure.microsoft.com/en-us/documentation/articles/functions-reference/). Azure Functions have built-in Service Bus [support](https://azure.microsoft.com/en-us/documentation/articles/functions-bindings-service-bus/) and allow users to start receiving and processing messages without the cost of infrastructure setup and maintenance. 
