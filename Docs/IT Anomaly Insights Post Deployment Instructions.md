@@ -104,17 +104,17 @@ Pipeline Health Monitoring
 This section outlines the steps to monitor if data flowing into the pipeline is successfully scored. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage and passes that data to Machine Learning - Anomaly Detection API for scoring. Scoring results are then persisted in Azure SQL database. Metrics are tracked for every service call. Collected telemetry data is sent to Application Insights (AI) which allows customers to set up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
-> 1) The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
+> 1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
 >
-> 2) Navigate to portal.azure.com and search for the AI account noted above.
+> 2. Navigate to portal.azure.com and search for the AI account noted above.
 >
-> 3) Once in the Application Insights blade, click on the "Metric Explorer" button.
+> 3. Once in the Application Insights blade, click on the "Metric Explorer" button.
 >
-> 4) You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
+> 4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
 >
-> 5) Pipeline health metrics will be listed under "Custom" section.
+> 5. Pipeline health metrics will be listed under "Custom" section.
 >
-> 6) Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
+> 6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
 > The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
 Integrating IT Anomaly Insights Results with On-premise Systems
@@ -130,13 +130,12 @@ Follow the instructions below to learn how to configure the types of anomalies (
 >
 > 2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
 >
-> 3. Azure Data Factory pipeline definition will appear on the right-most blade. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
+> 3. Azure Data Factory pipeline definition will appear on the right-most blade. 
 > 
-> The default query is shown below and only publishes messages for level spikes. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) will be published to Service Bus.
-> ```SQL
-> SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1 
-> ```
-> 4. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
+> 4. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
+> The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish messages for level spikes. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) will be published to Service Bus.
+>
+> 5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
 
 #### Receiving Service Bus Topics Messages
 
