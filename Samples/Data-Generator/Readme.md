@@ -4,7 +4,7 @@ Sample Data Generator Instructions
 ----------------------------------
 # Overview
 
-Sample data generator is a desktop application which sends sample data to a successfully deployed IT Anomaly Insights Preconfigured Solution.
+Sample data generator is a desktop application which sends sample data to a successfully deployed IT Anomaly Insights Preconfigured Solution. The usage instructions are provided below.
 
 # Instructions
 
