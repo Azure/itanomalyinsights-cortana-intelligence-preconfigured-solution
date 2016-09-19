@@ -9,7 +9,7 @@ The IT Anomaly Insights Preconfigured Solution will deploy an end to end solutio
 Architecture
 ------------
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
-When the pipeline is deployed, various Azure services within Cortana Analytics Suite are activated (i.e. Event Hub, Stream Analytics, Storage, HDInsight, Data Factory, Machine Learning, etc.). The architecture diagram above shows, at a high level, how the IT Anomaly Insights Preconfigured Solution pipeline is constructed from end-to-end.
+When the pipeline is deployed, various Azure services within Cortana Intelligence Suite are activated (i.e. Event Hub, Stream Analytics, Storage, HDInsight, Data Factory, Azure Machine Learning API (Anomaly Detection), Azure SQL Database, Application Insights, etc.). The architecture diagram above shows, at a high level, how the IT Anomaly Insights Preconfigured Solution pipeline is constructed from end-to-end.
 
 Data Source and Ingestion
 -------------------------
