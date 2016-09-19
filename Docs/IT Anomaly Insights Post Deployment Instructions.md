@@ -56,7 +56,7 @@ Schema:
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
-	"Brand": "Originating brand name of the event (optional)"
+	"Category": "Originating category of the event (optional)"
 }
 ```
 
