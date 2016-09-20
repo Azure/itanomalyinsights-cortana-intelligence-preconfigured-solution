@@ -8,7 +8,7 @@ Sample data generator is a desktop application which sends sample data to a succ
 
 # Instructions
 
-1. Download data generator files from [GitHub] location(https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator).
+1. Download data generator files from [GitHub location](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator).
 
 2. Launch application VisGenerator.exe from the local folder.
 
