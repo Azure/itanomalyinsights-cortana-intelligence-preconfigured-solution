@@ -1,7 +1,7 @@
 Azure Marketplace API Key For Anomaly Detection 
 ===============================================
 
-One of the requisites to get started with IT Anomaly Insights preconfigured solution is subscribing to Azure Marketplace API key for Anomaly Detection.
+One of the requisites to get started with IT Anomaly Insights solution is subscribing to Azure Marketplace API key for Anomaly Detection.
 To get started with this, step-by-step instructions are outlined below.
 
 > Step 1: Go to [Anomaly Detection Marketplace Page](https://datamarket.azure.com/dataset/aml_labs/anomalydetection), and click on "Signup" as shown below.<br/> ![pic_page] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/mp_data_marketplace.png)
