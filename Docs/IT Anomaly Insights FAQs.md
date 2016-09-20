@@ -1,4 +1,4 @@
-[IT Anomaly Insights Preconfigured Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
+[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
 ====================================
 Frequently Asked Questions (FAQs)
 ------------------------------------------
@@ -8,7 +8,7 @@ When the [Cortana Intelligence Quick Start](https://start.cortanaintelligence.co
 Here are the most frequently encountered issues when deploying the solution:
 > **1) Deployment of Azure Data Factory failed with error code MaxOnDemandComputeCoresReached and message “HDI Not enough cores for deployment”.**
 
-> **Solution:** ADF reserves a certain number of cores for on-demand clusters in each Azure Region and this message indicated that your subscription has already reached the limit for this region. You will need to delete unused ADF pipelines or preconfigured solutions in order to free up some cores or try deploying in another region that might have room. Alternatively, you can also raise a customer request via Azure portal to increase the ADF reserved quota for HDI cores, for this region if you need more capacity.
+> **Solution:** ADF reserves a certain number of cores for on-demand clusters in each Azure Region and this message indicated that your subscription has already reached the limit for this region. You will need to delete unused ADF pipelines in order to free up some cores or try deploying in another region that might have room. Alternatively, you can also raise a customer request via Azure portal to increase the ADF reserved quota for HDI cores, for this region if you need more capacity.
 
 > **2) Deployment latencies – my deployment is taking too long, what is happening?**
 
