@@ -7,7 +7,7 @@ The IT Anomaly Insights Solution will deploy an end to end solution into your su
    2. how to start sending sample data or real data to the solution to gather anomaly insights.
    3. how to setup the pre-built Power BI dashboard on your data
 
-## Architecture
+# Architecture
 
 The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Quick Start](https://start.cortanaintelligence.com), and how they are connected to each other to form the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and Anomaly Detection API.  
 
@@ -15,10 +15,9 @@ The architecture diagram shows various Azure services services that are deployed
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
 
 
-Data Source and Ingestion
--------------------------
+## Data Source and Ingestion
 ####Azure Event Hub
-The [Azure Event Hub](https://azure.microsoft.com/services/event-hubs/) service is the recipient of the input data provided by the data source. The data source can be the data generator provided or any service that can send data to Azure Event Hub in the required format. Read more about it in the following section.
+The [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them into multiple applications. Here, they are setup to ingest raw timeseries data from a variety of sources such as cloud gateways, monitoring agents, sensors, etc. For quick start, the solution provides a [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator) that can read time series data from CSV file and send it to event hubs. 
 
 Data Preparation and Analysis
 -----------------------------
