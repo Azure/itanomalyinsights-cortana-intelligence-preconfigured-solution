@@ -1,18 +1,19 @@
 [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
 ============================================
-[Cortana Intelligence Quick Start](https://start.cortanaintelligence.com) (CIQS) Deployment
-----------------------------------
-Overview
---------
+# Overview
+
 The IT Anomaly Insights Solution will deploy an end to end solution into your subscription. The goal of this document is to explain
    1. the reference architecture and different azure components provisioned as part of the deployment.
    2. how to start sending sample data or real data to the solution to gather anomaly insights.
    3. how to setup the pre-built Power BI dashboard on your data
 
-Architecture
-------------
+## Architecture
+
+The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Quick Start](https://start.cortanaintelligence.com), and how they are connected to each other to form the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and Anomaly Detection API.  
+
+
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
-When the pipeline is deployed, various Azure services within Cortana Intelligence Suite are activated (i.e. Event Hub, Stream Analytics, Storage, HDInsight, Data Factory, Azure Machine Learning API (Anomaly Detection), Azure SQL Database, Application Insights, etc.). The architecture diagram above shows, at a high level, how the IT Anomaly Insights Solution pipeline is constructed from end-to-end.
+
 
 Data Source and Ingestion
 -------------------------
