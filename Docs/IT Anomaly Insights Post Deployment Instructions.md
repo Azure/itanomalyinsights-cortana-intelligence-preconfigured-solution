@@ -20,14 +20,15 @@ The architecture diagram shows various Azure services services that are deployed
 The [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them into multiple applications. Here, they are setup to ingest raw timeseries data from a variety of sources such as cloud gateways, monitoring agents, sensors, etc. For quick start, the solution provides a [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator) that can read time series data from CSV file and send it to event hubs. 
 
 ## Data Preparation and Analysis
+
 ####Azure Stream Analytics
 The [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service is used to aggregate the raw incoming data from the event hubs at 5 mins interval and store it to [Azure Storage](https://azure.microsoft.com/services/storage/) for later processing by [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service. This job also pushes the time series data to SQL DB to visualize in PowerBI. 
-
 
 ####Azure Data Factory
 The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) from Azure Machine Learning for detecting anomalous events and then publishes the results. 
 
 ## Data Publishing
+
 ####Azure SQL Database Service and Service Bus Topics 
 The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
 The ADF also publishes any anomalies detected in the current slice to [Service Bus Topics](https://azure.microsoft.com/en-us/documentation/services/service-bus/). These anomaly messages can be subscribed to and consumed by variety of applications such as ticketing systems, chat clients, mobile apps, pagers, etc. 
@@ -37,12 +38,17 @@ The ADF also publishes any anomalies detected in the current slice to [Service B
 ####Power BI
 The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dashboard template that can be linked to the deployed and loaded with real time data from your deployment. The dashboard shows views over the raw time series that are monitored by the pipeline and any anomalies detected by the Anomaly Detection API.  The data for the dashboard is sourced from [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that is deployed with the solution. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
 
-# Post Deployment Steps
+# Getting Started After Deployment
 
-Below are the steps to get started with the deployed solution.
-> - **Step 1:** Once the solution is deployed successfully; you can start sending data into it.  The data source can be a simulated data source like sample data generator provided or you can bring your own data as described below. 
-> - **Step 2:** Monitor if data is flowing into your pipeline.
-> - **Step 3:** Lastly, visualize the results using Power BI dashboard.
+Once the solution is deployed to your subscription, the pipeline is ready to ingest time series data, detect anomalies and push data to dashboards and anomalies to topic queues. Here are the steps to get started: 
+####Step 1: Send data to the pipeline
+The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator) can be used to send real data or sample data to the event hub. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub. Please refer to the sample that comes with data generator as a reference for schema. Alternatively, you can download the sample file from the 'Try out your own data' experience. 
+ 
+####Step 2: Monitor pipeline 
+Monitor if the data is flowing through the pipeline. You can do this by looking at the incoming messages on the input event hub, input and output events on ASA, looking at ADF slices (once every 15mins) and finally the output into Sql tables.
+
+####Step 3: Visualize in Power BI
+Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github.
 
 ####Synthetic Data Source
 You can use Data Generator (available in the [GitHub repository](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Samples/Data-Generator/IT%20Anomaly%20Insights%20Data%20Generator.zip) for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the [Azure Event Hub](https://azure.microsoft.com/en-us/documentation/articles/cortana-analytics-technical-guide-demand-forecast/?tduid=%28ff7611aab34207ef35998cad0ae7b15b%29%28256380%29%282459594%29%28je6NUbpObpQ-tDK.bHRFEXOQuN7wy1uyeg%29%28%29) service with data points, or events, that will be used in the rest of the pipeline flow.
