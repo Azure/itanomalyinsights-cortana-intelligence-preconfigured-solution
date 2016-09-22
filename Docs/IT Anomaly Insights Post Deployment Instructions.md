@@ -42,17 +42,14 @@ The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dash
 
 Once the solution is deployed to your subscription, the pipeline is ready to ingest time series data, detect anomalies and push data to dashboards and anomalies to topic queues. Here are the steps to get started: 
 ####Step 1: Send data to the pipeline
-The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator) can be used to send real data or sample data to the event hub. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub. Please refer to the sample that comes with data generator as a reference for schema. Alternatively, you can download the sample file from the 'Try out your own data' experience. 
+The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator), a desktop application can be run locally to send real data or sample data to the event hub after successful deployment. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). For schema, please refer to the sample that comes with data generator or the sample available from the ['Try out your own data'](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) experience. 
  
 ####Step 2: Monitor pipeline 
 Monitor if the data is flowing through the pipeline. You can do this by looking at the incoming messages on the input event hub, input and output events on ASA, looking at ADF slices (once every 15mins) and finally the output into Sql tables.
 
 ####Step 3: Visualize in Power BI
-Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github.
+Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github. See [PBI section](#pbi-setup) for details. 
 
-####Synthetic Data Source
-You can use Data Generator (available in the [GitHub repository](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Samples/Data-Generator/IT%20Anomaly%20Insights%20Data%20Generator.zip) for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the [Azure Event Hub](https://azure.microsoft.com/en-us/documentation/articles/cortana-analytics-technical-guide-demand-forecast/?tduid=%28ff7611aab34207ef35998cad0ae7b15b%29%28256380%29%282459594%29%28je6NUbpObpQ-tDK.bHRFEXOQuN7wy1uyeg%29%28%29) service with data points, or events, that will be used in the rest of the pipeline flow.
-The event generation application will populate the Azure Event Hub only while it's executing on your computer.
 
 ####How to bring your own data 
 This section describes how to bring your own data to Azure. As long as the events being sent to the Azure Event Hub follow the required schema, encoding and format, there are no additional changes to be made to the pipeline components.
@@ -85,8 +82,8 @@ The last step of the pipeline is to write data (e.g. anomalies detected using Ma
 > 3) **Check Azure Data Factory dashboard.**
 The Azure Data Factory service orchestrates the movement and processing of data. You can access your data factory from the Azure management portal resource group (e.x. demo12345adf) . If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
-Power BI Dashboard
-------------------
+## Power BI Dashboard <a id="pbi-setup"/>
+
 ####Overview
 This section describes how to set up Power BI dashboard to visualize the output results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
 > 1) Get the database server name, database name, user name and password from the deployment summary page.
