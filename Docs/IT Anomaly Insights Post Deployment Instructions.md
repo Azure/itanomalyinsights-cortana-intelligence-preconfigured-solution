@@ -41,13 +41,34 @@ The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dash
 # Getting Started After Deployment
 
 Once the solution is deployed to your subscription, the pipeline is ready to ingest time series data, detect anomalies and push data to dashboards and anomalies to topic queues. Here are the steps to get started: 
-####Step 1: Send data to the pipeline
-The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator), a desktop application can be run locally to send real data or sample data to the event hub after successful deployment. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). For schema, please refer to the sample that comes with data generator or the sample available from the ['Try out your own data'](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) experience. 
+###Step 1: Send data to the pipeline
+The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator), a desktop application can be run locally to send real data or sample data to the event hub after successful deployment. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). Please use the sample that comes with data generator for refering to schema. 
  
-####Step 2: Monitor pipeline 
+####How to bring your own data 
+This section describes how to bring your own data to Azure. As long as the events sent to Azure Event Hub follow the required schema, encoding and format, there are no changes required to get the pipeline running
+
+**Encoding:** UTF-8
+
+**Formatting:** JSON
+
+**Schema:**
+```
+{
+	"Host": "Hostname (required)",
+	"Metric": "Counter/metric name (required)",
+	"Value": "Numeric value (required)",
+	"Application": "Originating application of the event (optional)",
+	"Category": "Originating category of the event (optional)"
+}
+```
+
+The Azure Event Hub service is generic and can ingest data in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is published to it. You can find more details on how to send events or data to an Azure Event Hub in [Event Hub guide](https://azure.microsoft.com/en-us/documentation/articles/event-hubsevent-hubs-programming-guide/).
+
+
+###Step 2: Monitor pipeline 
 Monitor if the data is flowing through the pipeline. You can do this by looking at the incoming messages on the input event hub, input and output events on ASA, looking at ADF slices (once every 15mins) and finally the output into Sql tables.
 
-####Step 3: Visualize in Power BI
+###Step 3: Visualize in Power BI
 Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github. See [PBI section](#pbi-setup) for details. 
 
 
