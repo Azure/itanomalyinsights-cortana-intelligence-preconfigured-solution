@@ -56,7 +56,7 @@ The event generation application will populate the Azure Event Hub only while it
 
 ####How to connect IT Anomaly Insights Solution with your data sources
 
-This section describes how to start feeding your own data into IT Anomaly Insights Solution. Below is the default schema definition. As long as the events being sent to the Azure Event Hub follow the default schema, encoding and format, there are no additional changes to be made to the pipeline components.
+This section describes how to start feeding your own data into IT Anomaly Insights Solution. Below is the default schema definition. As long as the events being sent to the Azure Event Hub follow the default schema, encoding and format, there are no additional changes to be made to the pipeline components. For instructions on how to modify the Solution to add additional fields to the input schema, please see [below](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#customizing-input-data-schema).
 
 Encoding: UTF-8
 
