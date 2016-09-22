@@ -32,13 +32,13 @@ The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data
 The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
 The ADF also publishes any anomalies detected in the current slice to [Service Bus Topics](https://azure.microsoft.com/en-us/documentation/services/service-bus/). These anomaly messages can be subscribed to and consumed by variety of applications such as ticketing systems, chat clients, mobile apps, pagers, etc. 
 
-Data Consumption
-----------------
-####Power BI
-The [Power BI](https://powerbi.microsoft.com/) service is used to show a dashboard that contains aggregations provided by the [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service as well as anomaly detection score results stored in [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that were produced using the [Azure Machine Learning](https://azure.microsoft.com/services/machine-learning/) service. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
+## Data Consumption
 
-Post Deployment Steps
----------------------
+####Power BI
+The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dashboard template that can be linked to the deployed and loaded with real time data from your deployment. The dashboard shows views over the raw time series that are monitored by the pipeline and any anomalies detected by the Anomaly Detection API.  The data for the dashboard is sourced from [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that is deployed with the solution. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
+
+# Post Deployment Steps
+
 Below are the steps to get started with the deployed solution.
 > - **Step 1:** Once the solution is deployed successfully; you can start sending data into it.  The data source can be a simulated data source like sample data generator provided or you can bring your own data as described below. 
 > - **Step 2:** Monitor if data is flowing into your pipeline.
