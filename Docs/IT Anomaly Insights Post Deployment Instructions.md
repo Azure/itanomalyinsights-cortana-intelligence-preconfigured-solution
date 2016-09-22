@@ -54,12 +54,16 @@ Lastly, you can visualize the output in Power BI using the [PBI template file](h
 You can use Data Generator (available in the [GitHub repository](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Samples/Data-Generator/IT%20Anomaly%20Insights%20Data%20Generator.zip) for this solution) as the data source to provide synthetic data to the deployed pipeline. The data generator is a desktop application that you can download and run locally after successful deployment. You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). This application feeds the [Azure Event Hub](https://azure.microsoft.com/en-us/documentation/articles/cortana-analytics-technical-guide-demand-forecast/?tduid=%28ff7611aab34207ef35998cad0ae7b15b%29%28256380%29%282459594%29%28je6NUbpObpQ-tDK.bHRFEXOQuN7wy1uyeg%29%28%29) service with data points, or events, that will be used in the rest of the pipeline flow.
 The event generation application will populate the Azure Event Hub only while it's executing on your computer.
 
-####How to bring your own data 
-This section describes how to bring your own data to Azure. As long as the events being sent to the Azure Event Hub follow the required schema, encoding and format, there are no additional changes to be made to the pipeline components.
+####How to connect IT Anomaly Insights Solution with your data sources
+
+This section describes how to start feeding your own data into IT Anomaly Insights Solution. Below is the default schema definition. As long as the events being sent to the Azure Event Hub follow the default schema, encoding and format, there are no additional changes to be made to the pipeline components.
+
 Encoding: UTF-8
+
 Formatting: JSON
+
 Schema:
-```
+```json
 {
 	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
@@ -69,8 +73,8 @@ Schema:
 }
 ```
 
-The Azure Event Hub service is very generic, such that data can be posted to the hub in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is fed into it.
-This document does not describe how to ingest your data, but one can easily send events or data to an Azure Event Hub, using the [Event Hub API](https://azure.microsoft.com/en-us/documentation/articles/event-hubsevent-hubs-programming-guide/).
+Data can be published to Azure Event Hub in either CSV or JSON format. For detailed instructions on how to publish events to Azure Event Hub, please refer to [Event Hub Programming Guide](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-programming-guide/).
+
 
 Monitor Progress
 ----------------
@@ -120,7 +124,105 @@ This section describes how to set up Power BI dashboard to visualize the output 
 > - To schedule refresh of the data, hover your mouse over the dataset, click "..." and then choose **Schedule Refresh**. **Note:** If you see a warning massage, click **Edit Credentials** and make sure your database credentials are the same as those described in step 1.
 > - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-Pipeline Health Monitoring
+Customizing Input Data Schema
+-----------------------------
+
+Suppose that in our Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying Power BI dashboard.
+
+Each event will need to report the region where it originates. Therefore, the event schema above will need to be modified to add "Region" field as follows.
+
+```json
+{
+	"Host": "Hostname (required)",
+	"Metric": "Counter/metric name (required)",
+	"Value": "Numeric value (required)",
+	"Application": "Originating application of the event (optional)",
+	"Category": "Originating category of the event (optional)",
+	"Region": "Originating region of the event (optional)"
+}
+```
+
+> 1. **Modify Azure SQL database table schema** 
+>    
+>    First, we will need to modify Azure SQL database schema. Deployment summary page will list database credentials we can use to connect to the database.
+>    
+>    ![Azure SQL credentials](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
+>    
+>    We will need to connect to the database and run the following two queries:
+>
+>    ```sql
+>    ALTER TABLE [dbo].[AdditionalInfo] ADD Region VARCHAR(2000);
+>    ```
+>
+>    ```sql
+>    ALTER VIEW [dbo].[view_AdditionalInfo]
+>    AS
+>    (
+>        SELECT 
+>            [InputTimestamp],
+>            [HostnameMetricname],
+>            [MetricName],
+>            [HostName],
+>            [EventVolumePerHost],
+>            [Application],
+>            [Brand],
+>            [Region]
+>        FROM [dbo].[AdditionalInfo] WITH (NOLOCK)
+>        WHERE [InputTimestamp] >= DATEADD(DAY,-3,GETDATE())
+>    )
+>    ```
+>
+> 2. **Modify Azure Stream Analytics job** 
+>    
+>    Next, we will modify Azure Stream Analytics job to persist the "Region" field of the incoming events into Azure SQL database table.
+>    
+>    In Azure portal click "Resource groups" and find the resource group that has the same name as your solution. The resource group should contain one Stream Analytics resource. Click on it.
+>    
+>    ![Resource Groups in Azure Portal with Stream Analytics resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_resource.png)
+>
+>    Stop the Stream Analytics job and click "Query" under "Job Topology".
+>    
+>    ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+>    
+>    The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify the third query to match the query below:
+>   
+>    ```sql
+>    SELECT 
+>        CONCAT('All hosts', '-', REPLACE(REPLACE(REPLACE(REPLACE(Metric, '/', ' '), '\', ' '), '#', ' '), '?' , ' ')) AS HostnameMetricname,
+>        System.TIMESTAMP as InputTimestamp, 
+>        [Metric] as MetricName, 
+>        [Host] as HostName, 
+>        count(Host) as EventVolumePerHost, 
+>        [Application] as Application, 
+>        [Brand] as Brand,
+>        [Region] as Region
+>    INTO [asaEgressSqlDb] 
+>    FROM [asaIngress] 
+>        GROUP BY TumblingWindow(Minute, 5), [Metric], [Host], [Application], [Brand], [Region]
+>    ```
+>    
+>    Save your changes and re-start Stream Analytics job.
+>
+> 3. **Modify Power BI dashboard**
+>
+>    Finally, we will add a visualization in our Power BI dashboard which will display event counts grouped by region. Note that having Power BI dashboard connect to your Azure SQL database is a prerequisite for this step. If you haven't done that yet, please refer to the [instructions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/ryumbra-schema-mod/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#power-bi-dashboard) on how to do it.
+>
+>    Open your Power BI dashboard and click "Edit Queries".
+>    
+>    ![Edit Queries button in Power BI](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_editqueries.png)
+>    
+>    In Power BI query editor window click "Refresh Preview" to update the data. Make sure that "view_AdditionalInfo" is selected in the left panel. Ensure that "Region" column is being populated. Note that this column is expected to be populated only for records written after modifying Stream Analytics job in step 2. Rows corresponding to the events written prior to that will have null values.
+>    
+>    ![Power BI Query Editor](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_queryEditor.png)
+>
+>    Close Power BI Query Editor window.
+>
+>    Click "Refresh" to refresh Power BI dashboard. Under "Visualizations" pick "Table". Select "Region" and "EventVolumePerHost" under "Fields". Now you can see the event breakdown by region. 
+>
+>    ![Event breakdown by regions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_add_visualization.png)
+
+
+Solution Health Monitoring
 --------------------------
 
 This section outlines the steps to monitor if data flowing into the pipeline is successfully scored. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage and passes that data to Machine Learning - Anomaly Detection API for scoring. Scoring results are then persisted in Azure SQL database. Metrics are tracked for every service call. Collected telemetry data is sent to Application Insights (AI) which allows customers to set up monitoring dashboards and alarms.
