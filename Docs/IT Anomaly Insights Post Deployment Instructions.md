@@ -126,33 +126,28 @@ This section describes how to set up Power BI dashboard to visualize the results
 - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". 
 - - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-Pipeline Health Monitoring
---------------------------
+###Step 4: Pipeline Health Monitoring
 
-This section outlines the steps to monitor if data flowing into the pipeline is successfully scored. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage and passes that data to Machine Learning - Anomaly Detection API for scoring. Scoring results are then persisted in Azure SQL database. Metrics are tracked for every service call. Collected telemetry data is sent to Application Insights (AI) which allows customers to set up monitoring dashboards and alarms.
+This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to Machine Learning - Anomaly Detection API for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
-> 1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
->
-> 2. Navigate to portal.azure.com and search for the AI account noted above.
->
-> 3. Once in the Application Insights blade, click on the "Metric Explorer" button.
->    
->    ![Application Insights Metrics Explorer button] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
-> 
-> 4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
->    
->    ![Metrics Explorer Blade] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_metricsExplorer.png)
->
-> 5. Pipeline health metrics will be listed under "Custom" section.
->    
->    ![Pipeline health metrics] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_CustomMetrics.png)
->
-> 6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
->    
->    ![Sample Pipeline Health Dashboard] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_sampleDashboard.png)
->    
->    The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
+1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
+2. Navigate to portal.azure.com and search for the AI account noted above.
+3. Once in the Application Insights blade, click on the "Metric Explorer" button.
+    
+   ![Application Insights Metrics Explorer button] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
+4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
+   
+  ![Metrics Explorer Blade] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_metricsExplorer.png)
+5. Pipeline health metrics will be listed under "Custom" section.
+   
+   ![Pipeline health metrics] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_CustomMetrics.png)
+
+6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
+    
+ ![Sample Pipeline Health Dashboard] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_sampleDashboard.png)
+  
+ The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
 Integrating IT Anomaly Insights Results with On-premise Systems
 ---------------------------------------------------------------
