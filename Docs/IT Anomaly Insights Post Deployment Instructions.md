@@ -41,7 +41,9 @@ The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dash
 # Getting Started After Deployment
 
 Once the solution is deployed to the subscription, you can see the services deployed by clicking the resource group name on the final deployment screen in the CIS. 
-![CIS resource group link](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/CIS-resourcegrp.PNG).
+
+![CIS resource group link](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/CIS-resourcegrp.PNG)
+
 This will show all the resources under this resource groups on [Azure management portal](https://portal.azure.com/). After successful deployment, the pipeline is ready to ingest time series data, detect anomalies and push results to dashboard and anomalies to topic queues. 
 Here are the next steps: 
 
