@@ -4,7 +4,7 @@ Frequently Asked Questions (FAQs)
 ------------------------------------------
 
 ### Deployment Failures 
-When the [Cortana Intelligence Quick Start](https://start.cortanaintelligence.com/) (CIQS) portal reports a failure to deploy the solution, please navigate to the Resource Group link provided in the deployment page, which will take you to the Azure portal. Under Settings -> Deployment tab you will be able to see the deployments and get more logs if there were failures. 
+When the [Cortana Intelligence Solutions](https://start.cortanaintelligence.com/) portal reports a failure to deploy the solution, please navigate to the Resource Group link provided in the deployment page, which will take you to the Azure portal. Under Settings -> Deployment tab you will be able to see the deployments and get more logs if there were failures. 
 Here are the most frequently encountered issues when deploying the solution:
 > **1) Deployment of Azure Data Factory failed with error code MaxOnDemandComputeCoresReached and message “HDI Not enough cores for deployment”.**
 
