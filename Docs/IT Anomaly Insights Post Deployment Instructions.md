@@ -149,31 +149,28 @@ Steps to set up a sample health dashboard are outlined below.
   
  The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
-###Step 5: (Optional)Integrating IT Anomaly Insights Results with On-premise Systems
-IT Anomaly Insights PCS will publish Anomaly Detection results to Azure Service Bus Topic. This section covers steps to configure  anomalies to publish to the Service Bus Topic, and how to integrate with Service Bus Topics.
+###Step 5: (Optional) Integrating IT Anomaly Insights Results with On-premise Systems
+IT Anomaly Insights solution publishes anomalies to Azure Service Bus Topic. This section covers steps to configure anomalies to publish to the Service Bus Topic, and how to integrate with Service Bus Topics.
 
-#### Configuring Service Bus Topic Result Publishing
-Follow the instructions below to learn how to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) that will be published to Service Bus Topics.
+#### Configuring anomaly publishing to Service Bus Topic
+Follow the instructions below to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) to publish to Service Bus Topics.
+  1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
+   ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
 
-> 1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
->    
->    ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
->
-> 2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
->    
->    ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
->
-> 3. Azure Data Factory pipeline definition will appear on the right-most blade. 
->    
-> 4. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
->    
->    The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish messages for level spikes. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) will be published to Service Bus.
->
->    ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
->    
-> 5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
->    
->    ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
+  2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
+   
+   ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
+
+  3. Azure Data Factory pipeline definition will appear on the right-most blade. 
+   
+  4. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
+    
+   The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish spike anomalies. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) to publish to Service Bus. (Refer to the 'Output' section on [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) to understand the column names and their meaning)
+
+   ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
+  5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
+    
+   ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
 
 #### Receiving Service Bus Topics Messages
 
