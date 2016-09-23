@@ -126,24 +126,24 @@ This section describes how to set up Power BI dashboard to visualize the results
 - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". 
 - - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-###Step 4: Pipeline Health Monitoring
+###Step 4: (optional) Pipeline Health Monitoring
 
 This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to Machine Learning - Anomaly Detection API for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
-1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
-2. Navigate to portal.azure.com and search for the AI account noted above.
-3. Once in the Application Insights blade, click on the "Metric Explorer" button.
+  1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
+  2. Navigate to portal.azure.com and search for the AI account noted above.
+  3. Once in the Application Insights blade, click on the "Metric Explorer" button.
     
    ![Application Insights Metrics Explorer button] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
-4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
+  4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
    
   ![Metrics Explorer Blade] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_metricsExplorer.png)
-5. Pipeline health metrics will be listed under "Custom" section.
+  5. Pipeline health metrics will be listed under "Custom" section.
    
    ![Pipeline health metrics] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_CustomMetrics.png)
 
-6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
+  6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
     
  ![Sample Pipeline Health Dashboard] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_sampleDashboard.png)
   
