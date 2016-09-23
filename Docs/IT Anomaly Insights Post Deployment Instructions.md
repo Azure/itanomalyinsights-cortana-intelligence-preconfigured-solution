@@ -72,16 +72,16 @@ The Azure Event Hub service is generic and can ingest data in either CSV or JSON
 
 
 ###Step 2: Monitor pipeline progress
-You can do this by looking at the incoming messages on the input event hub, input and output events on ASA, looking at ADF slices (once every 15mins) and finally the output into Sql tables.
-----------------
+
+
 Once the data generator/data source starts sending events, the pipeline starts getting hydrated and the different components of the solution start kicking into action following the commands issued by the Data Factory. The pipeline progress can be monitored using one or more of the following options: 
 #### 1. **Check input data in Azure Table Storage and Azure SQL Database.**
-The Stream Analytics job writes aggregated incoming data to table storage and SQL database. Click the resource group link on the solution deployment page by first clicking on the deployment name in [CIS](https://start.cortanaintelligence.com/Deployments) to see the deployed solution and the resource group 's resource group on [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. You can also check the if data is being populated in the tables using tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being generated on your computer and stored in table storage. 
-You can also check the data being populated in SQL database by going to your Resource Group, and locating your database (ex: demo123456db ) and connecting to it using the SQL server username and password provided in the CIQS portal. Once connected, you can check **“AdditionalInfo”** table in the database and make sure it has records being populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
->
+The Stream Analytics job writes aggregated incoming data to table storage and SQL database. Click the resource group link on the solution deployment page by first clicking on the deployment name in [CIS](https://start.cortanaintelligence.com/Deployments) to see the deployed solution and the resource group 's resource group on [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. You can also check the if data is being populated in the tables using tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
+You can also check the data being populated in SQL database by going to your Resource Group, and locating your database (ex: demo123456db ) and connecting to it using the SQL server username and password provided in the CIS portal. Once connected, you can check **“AdditionalInfo”** table in the database and make sure it has records being populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
+
 #### 2. **Check the results output data from Azure SQL Database.**
 The last step of the pipeline is to write data (e.g. anomalies detected using Machine Learning API) into SQL Database table named **“AdScoreResults”**. You might have to wait for a minimum of 15 minutes for the output data to appear in table. Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults"). As your database grows, the number of rows in the table should increase.
->
+
 #### 3. **Check Azure Data Factory dashboard.**
 The Azure Data Factory service orchestrates the movement and processing of data. You can access your data factory from the Azure management portal resource group (e.x. demo12345adf) . If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
@@ -90,8 +90,7 @@ The Azure Data Factory service orchestrates the movement and processing of data.
 Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github. See [PBI section](#pbi-setup) for details. 
 
 
-
-## Power BI Dashboard <a id="pbi-setup"/>
+### Power BI Dashboard <a id="pbi-setup"/>
 
 ####Overview
 This section describes how to set up Power BI dashboard to visualize the output results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
