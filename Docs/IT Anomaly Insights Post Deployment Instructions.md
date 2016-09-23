@@ -124,15 +124,15 @@ This section describes how to set up Power BI dashboard to visualize the results
 4) (Optional) Schedule refresh of the data source.
 - To schedule refresh of the data, hover your mouse over the dataset, click "..." and then choose **Schedule Refresh**. **Note:** If you see a warning massage, click **Edit Credentials** and make sure your database credentials are the same as those described in step 1.
 - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". 
-- - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
+- Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-###Step 4: (optional) Pipeline Health Monitoring
+###Step 4: (Optional) Pipeline Health Monitoring
 
-This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to Machine Learning - Anomaly Detection API for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
+This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to [Machine Learning - Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
   1. The name of Application Insights account will be displayed on the deployment summary page in Cortana Intelligence Solution. Make a note of it.
-  2. Navigate to portal.azure.com and search for the AI account noted above.
+  2. Navigate to  [Azure Management Portal](https://portal.azure.com/). and search for the AI account noted above.
   3. Once in the Application Insights blade, click on the "Metric Explorer" button.
     
    ![Application Insights Metrics Explorer button] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
@@ -149,11 +149,8 @@ Steps to set up a sample health dashboard are outlined below.
   
  The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
-Integrating IT Anomaly Insights Results with On-premise Systems
----------------------------------------------------------------
-
-#### Overview
-IT Anomaly Insights PCS will publish Anomaly Detection results to Azure Service Bus Topic. This section covers steps to configure which anomalies will be published to the Service Bus Topic, as well as how to integrate with Service Bus Topics.
+###Step 5: (Optional)Integrating IT Anomaly Insights Results with On-premise Systems
+IT Anomaly Insights PCS will publish Anomaly Detection results to Azure Service Bus Topic. This section covers steps to configure  anomalies to publish to the Service Bus Topic, and how to integrate with Service Bus Topics.
 
 #### Configuring Service Bus Topic Result Publishing
 Follow the instructions below to learn how to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) that will be published to Service Bus Topics.
