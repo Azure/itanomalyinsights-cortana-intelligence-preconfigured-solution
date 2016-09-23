@@ -16,11 +16,11 @@ Sample data generator is a desktop application which sends sample data to a succ
 This is a one time setting, and will be persisted for future use. You can change the settings any time by stopping the data generator and modifying these inputs and saving them.
 ![VisGenerator.exe screenshot](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Samples/Data-Generator/figures/sdg_visgenerator.png)
 
-	** * Event Hub Name (required):** Event hub name from the deployed solution to which the data generator will send data.
+	**Event Hub Name (required):** Event hub name from the deployed solution to which the data generator will send data.
 	
-	** * Event Hub Connection String (required):** Event hub connection string for the event hub provided above
+	**Event Hub Connection String (required):** Event hub connection string for the event hub provided above
 	
-	** *  Path of sample data file: (optional)** Sample data file path on the local machine. If path is not provided a default data file will be used
+	**Path of sample data file: (optional)** Sample data file path on the local machine. If path is not provided a default data file will be used
 	
 	>Formatting: CSV
 
@@ -61,6 +61,6 @@ data generator can pick up the latest changes. If you still notice issues, pleas
    Once deleted, relaunch the application and make the edits and save again. This should fix the problem.
 
 4. How to update the config file of the data generator in configs
-   >Solution: You can set the config of the data generator directly by editing the file named "ADDataGenConfig.json" in the directory location of the application. If this file is not preset, start the application and enter any input and click on "Save Configuration Changes" which will force this file to be created. Then you can modify this file directly. Once the application is relaunched it will use this saved config.
+   >Solution: You can set the config of the data generator directly by editing the file named "ADDataGenConfig.json" in the directory location of the application. If this file is not present, start the application and enter any input and click on "Save Configuration Changes" which will force this file to be created. Then you can modify this file directly. Once the application is relaunched it will use this saved config.
    
 For any additional questions, please feel free to contact us at adpcs_support@microsoft.com. 
