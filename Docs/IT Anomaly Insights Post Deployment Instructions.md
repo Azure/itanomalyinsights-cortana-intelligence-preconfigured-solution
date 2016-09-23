@@ -182,3 +182,103 @@ There is a wealth of documentation and code samples that show how to receive Ser
 Service Bus Topics are also supported in Azure WebJobs (see [documentation](https://azure.microsoft.com/en-us/documentation/articles/websites-dotnet-webjobs-sdk-service-bus/)).
 
 Customers who do not have existing infrastructure are encouraged to try [Azure Functions](https://azure.microsoft.com/en-us/documentation/articles/functions-reference/). Azure Functions have built-in Service Bus [support](https://azure.microsoft.com/en-us/documentation/articles/functions-bindings-service-bus/) and allow users to start receiving and processing messages without the cost of infrastructure setup and maintenance. 
+
+
+# Customizing Solution: Adding new dimensions
+
+Suppose that in our Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying Power BI dashboard.
+
+Each event will need to report the region where it originates. Therefore, the event schema above will need to be modified to add "Region" field as follows.
+
+```json
+{
+	"Host": "Hostname (required)",
+	"Metric": "Counter/metric name (required)",
+	"Value": "Numeric value (required)",
+	"Application": "Originating application of the event (optional)",
+	"Category": "Originating category of the event (optional)",
+	"Region": "Originating region of the event (optional)"
+}
+```
+
+1. **Modify Azure SQL database table schema** 
+    
+    First, we will need to modify Azure SQL database schema. Deployment summary page will list database credentials we can use to connect to the database.
+    
+    ![Azure SQL credentials](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
+ 
+    We will need to connect to the database and run the following two queries:
+
+    ```sql
+    ALTER TABLE [dbo].[AdditionalInfo] ADD Region VARCHAR(2000);
+    ```
+
+    ```sql
+    ALTER VIEW [dbo].[view_AdditionalInfo]
+    AS
+    (
+        SELECT 
+            [InputTimestamp],
+            [HostnameMetricname],
+            [MetricName],
+            [HostName],
+            [EventVolumePerHost],
+            [Application],
+            [Brand],
+            [Region]
+        FROM [dbo].[AdditionalInfo] WITH (NOLOCK)
+        WHERE [InputTimestamp] >= DATEADD(DAY,-3,GETDATE())
+    )
+    ```
+
+2. **Modify Azure Stream Analytics job** 
+    
+    Next, we will modify Azure Stream Analytics job to persist the "Region" field of the incoming events into Azure SQL database table.
+    
+    In Azure portal click "Resource groups" and find the resource group that has the same name as your solution. The resource group should contain one Stream Analytics resource. Click on it.
+    
+    ![Resource Groups in Azure Portal with Stream Analytics resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_resource.png)
+
+    Stop the Stream Analytics job and click "Query" under "Job Topology".
+    
+    ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+    
+    The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify the third query to match the query below:
+   
+    ```sql
+    SELECT 
+        CONCAT('All hosts', '-', REPLACE(REPLACE(REPLACE(REPLACE(Metric, '/', ' '), '\', ' '), '#', ' '), '?' , ' ')) AS HostnameMetricname,
+        System.TIMESTAMP as InputTimestamp, 
+        [Metric] as MetricName, 
+        [Host] as HostName, 
+        count(Host) as EventVolumePerHost, 
+        [Application] as Application, 
+        [Brand] as Brand,
+        [Region] as Region
+    INTO [asaEgressSqlDb] 
+    FROM [asaIngress] 
+        GROUP BY TumblingWindow(Minute, 5), [Metric], [Host], [Application], [Brand], [Region]
+    ```
+    
+    Save your changes and re-start Stream Analytics job.
+
+3. **Modify Power BI dashboard**
+
+    Finally, we will add a visualization in our Power BI dashboard which will display event counts grouped by region. Note that having Power BI dashboard connect to your Azure SQL database is a prerequisite for this step. If you haven't done that yet, please refer to the [instructions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/ryumbra-schema-mod/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#power-bi-dashboard) on how to do it.
+
+    Open your Power BI dashboard and click "Edit Queries".
+    
+    ![Edit Queries button in Power BI](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_editqueries.png)
+    
+    In Power BI query editor window click "Refresh Preview" to update the data. Make sure that "view_AdditionalInfo" is selected in the left panel. Ensure that "Region" column is being populated. Note that this column is expected to be populated only for records written after modifying Stream Analytics job in step 2. Rows corresponding to the events written prior to that will have null values.
+    
+    ![Power BI Query Editor](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_queryEditor.png)
+
+    Close Power BI Query Editor window.
+
+    Click "Refresh" to refresh Power BI dashboard. Under "Visualizations" pick "Table". Select "Region" and "EventVolumePerHost" under "Fields". Now you can see the event breakdown by region. 
+
+    ![Event breakdown by regions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_add_visualization.png)
+
+
+
