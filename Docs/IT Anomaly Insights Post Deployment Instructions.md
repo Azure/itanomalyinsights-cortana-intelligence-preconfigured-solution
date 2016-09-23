@@ -155,7 +155,8 @@ IT Anomaly Insights solution publishes anomalies to Azure Service Bus Topic. Thi
 #### Configuring anomaly publishing to Service Bus Topic
 Follow the instructions below to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) to publish to Service Bus Topics.
   1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
-   ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
+   
+  ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
 
   2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
    
@@ -172,7 +173,7 @@ Follow the instructions below to configure the types of anomalies (i.e. spikes, 
     
    ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
 
-#### Receiving Service Bus Topics Messages
+#### Receiving anomalies from Service Bus Topics
 
 Three pieces of information are needed to start consuming Service Bus Topics messages: topic name, subscription name and Service Bus connection string. All three are provided under “Deployment summary” in Cortana Intelligence Solution.
 
