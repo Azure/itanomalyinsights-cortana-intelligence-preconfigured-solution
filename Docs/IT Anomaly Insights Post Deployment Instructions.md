@@ -83,11 +83,11 @@ You can also check the SQL database by and locating your database(ex: demo123456
 The pipeline writes the scored results (e.g. alerts and anomaly scores detected using Machine Learning API) into SQL Database table named **“AdScoreResults”**. *You might have to wait for ~15 minutes for the output data to appear in table.* Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults") which should increase perodically in a functioning solution.
 
 #### 3. **Check Azure Data Factory dashboard.**
-The Azure Data Factory service orchestrates the movement and processing of data. You can access the data factory(ex: demo12345adf) from the resource group on Azure management portal. If you see errors under your datasets, you can ignore those as they are due to data factory being deployed before the data generator was started. Those errors do not prevent your data factory from functioning. Read more about monitoring and managing the ADF pipeline [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
+The Azure Data Factory service orchestrates the movement and processing of data. You can access the data factory(ex: demo12345adf) from the resource group on [Azure management portal](https://portal.azure.com/). The data factory datasets will show errors initially if the data is not being streamed to the pipeline. These can be ignored and will go away once the data appears on the input (Refer step 1 above). More info on monitoring and managing the ADF pipeline can be found  [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
 
 ###Step 3: Visualize in Power BI
-Lastly, you can visualize the output in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) on github. See [PBI section](#pbi-setup) for details. 
+Lastly, if the data is being sent to the pipeline(step 1) and flowing through the pipeline without errors (step 2), it can be visualized in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI section](#pbi-setup) for details. 
 
 
 ### Power BI Dashboard <a id="pbi-setup"/>
