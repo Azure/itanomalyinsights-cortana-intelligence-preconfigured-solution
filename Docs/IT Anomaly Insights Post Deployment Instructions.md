@@ -76,7 +76,7 @@ The Azure Event Hub service is generic and can ingest data in either CSV or JSON
 
 Once the data generator/data source starts sending events, the pipeline starts getting hydrated and the different components of the solution start kicking into action following the commands issued by the Data Factory. The pipeline progress can be monitored using one or more of the following options: 
 #### 1. **Check input data in Azure Table Storage and Azure SQL Database**
-The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
+The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
 You can also check the SQL database by and locating your database(ex: demo123456db) and connecting to it using the SQL server username and password provided on the CIS portal. Once connected, you can check **“AdditionalInfo”** table for records populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
 
 #### 2. **Check the results output data from Azure SQL Database**
@@ -94,7 +94,7 @@ Lastly, if the data is being sent to the pipeline(step 1) and flowing through th
 
 This section describes how to set up Power BI dashboard to visualize the results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
 
-1) Get the database server name, database name, user name and password from the [deployment summary page](https://start.cortanaintelligence.com/Deployments) on CIS
+1) Get the database server name, database name, user name and password from the [deployment summary page](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs) on CIS
 ![SQL Database credentials in deployment summary page](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
 2) Update the data source of the Power BI file.
  - Make sure you have the latest version of [Power BI desktop](https://powerbi.microsoft.com/desktop) installed.
