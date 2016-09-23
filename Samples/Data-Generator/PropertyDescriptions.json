@@ -7,6 +7,10 @@
         "Title": "Event Hub Connection String",
         "Description": "The connection string to the service bus containing the event hub.",
     },
+    "SampleDataFilePath": {
+        "Title": "User provided sample csv data file.",
+        "Description": "Data generator will consume the sample data file provided by user."
+    },
     "StorageAccountConnectionString": {
         "Title": "Azure Storage Connection String",
         "Description": "The connection string to an Azure Storage service"
