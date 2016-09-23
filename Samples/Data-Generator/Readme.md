@@ -1,10 +1,10 @@
-[IT Anomaly Insights Preconfigured Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
+[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
 ============================================
 Sample Data Generator Instructions
 ----------------------------------
 # Overview
 
-Sample data generator is a desktop application which sends sample data to a successfully deployed IT Anomaly Insights Preconfigured Solution. The usage instructions are provided below.
+Sample data generator is a desktop application which sends sample data to a successfully deployed [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b). The usage instructions are provided below.
 
 # Instructions
 
@@ -13,7 +13,7 @@ Sample data generator is a desktop application which sends sample data to a succ
 2. Launch application VisGenerator.exe from the local folder.
    
 3. Provide the following input and click on "Save Configuration Changes".
-This is a one time setting, and will be persisted for future use. You can change the settings any time by stopping the data generator and modifying these inputs and saving them.
+This is a one-time setting, and will be persisted for future use. You can change the settings any time by stopping the data generator and modifying these inputs and saving them.
 ![VisGenerator.exe screenshot](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Samples/Data-Generator/figures/sdg_visgenerator.png)
 
 	**Event Hub Name (required):** Event hub name from the deployed solution to which the data generator will send data.
@@ -27,15 +27,15 @@ This is a one time setting, and will be persisted for future use. You can change
 	>Schema:
 	>
 		{
-			"Time": DATETIME (required) "The timestamp of the event in UTC or UNIX timestamp format (Seconds since Epoch)",
-			"Value": FLOAT (required) "The metric value of the event",
-			"Metric": VARCHAR(500) (required) "The unique identifier of a particular time series",
-			"Host": VARCHAR(100) (required) "The name of the host where the event is fired",
-			"Region": VARCHAR(100) (optional) "The region where the event occurs; can be empty",
-			"Scenario": VARCHAR(100)(optional) "The scenario to which the event belongs to, can be empty,
-			"Category": VARCHAR(100) (optional) "The category associated with the event; can be empty",
-			"Application": VARCHAR(500) (optional) "Originating application of the event; can be empty",
-			"Brand": VARCHAR(500) (optional) "Originating brand of the event; can be empty"
+			"Time"        :  DATETIME     (required) "The timestamp of the event in UTC or UNIX timestamp format (Seconds since Epoch)",
+			"Value"       :  FLOAT        (required) "The metric value of the event",
+			"Metric"      :  VARCHAR(500) (required) "The unique identifier of a particular time series",
+			"Host"        :  VARCHAR(100) (required) "The name of the host where the event is fired",
+			"Region"      :  VARCHAR(100) (optional) "The region where the event occurs; can be empty",
+			"Scenario"    :  VARCHAR(100) (optional) "The scenario to which the event belongs to, can be empty,
+			"Category"    :  VARCHAR(100) (optional) "The category associated with the event; can be empty",
+			"Application" :  VARCHAR(500) (optional) "Originating application of the event; can be empty",
+			"Brand"       :  VARCHAR(500) (optional) "Originating brand of the event; can be empty"
 		}
 	>
 4. Click on Start button to start sending sample data events into the Event Hub.
