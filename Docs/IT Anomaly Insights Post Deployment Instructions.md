@@ -131,7 +131,7 @@ This section describes how to set up Power BI dashboard to visualize the results
 This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to Machine Learning - Anomaly Detection API for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
-  1. The name of Application Insights account will be displayed on the deployment summary page in CIQS. Make a note of it.
+  1. The name of Application Insights account will be displayed on the deployment summary page in Cortana Intelligence Solution. Make a note of it.
   2. Navigate to portal.azure.com and search for the AI account noted above.
   3. Once in the Application Insights blade, click on the "Metric Explorer" button.
     
@@ -158,7 +158,7 @@ IT Anomaly Insights PCS will publish Anomaly Detection results to Azure Service 
 #### Configuring Service Bus Topic Result Publishing
 Follow the instructions below to learn how to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) that will be published to Service Bus Topics.
 
-> 1. In Azure Portal navigate to the Resource Group bearing the name of your CIQS project. Find the Data Factory resource.
+> 1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
 >    
 >    ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
 >
@@ -180,7 +180,7 @@ Follow the instructions below to learn how to configure the types of anomalies (
 
 #### Receiving Service Bus Topics Messages
 
-Three pieces of information are needed to start consuming Service Bus Topics messages: topic name, subscription name and Service Bus connection string. All three are provided under “Deployment summary” in CIQS.
+Three pieces of information are needed to start consuming Service Bus Topics messages: topic name, subscription name and Service Bus connection string. All three are provided under “Deployment summary” in Cortana Intelligence Solution.
 
 There is a wealth of documentation and code samples that show how to receive Service Bus messages from a topic subscription. The following Microsoft documentation [article](https://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-topics-subscriptions/) gives a quick overview and provides sample code which will help users integrate their services with Service Bus. 
 
