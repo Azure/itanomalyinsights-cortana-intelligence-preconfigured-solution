@@ -4,8 +4,9 @@
 
 The IT Anomaly Insights Solution will deploy an end to end solution into your subscription. The goal of this document is to explain
    1. the reference architecture and different azure components provisioned as part of the deployment
-   2. how to start sending sample data or real data to the solution to gather anomaly insights, and
-   3. how to setup the pre-built Power BI dashboard on your data
+   2. how to start sending sample data or real data to the solution to gather anomaly insights
+   3. how to consume the results using pre-built Power BI dashboard and alerts using Service Bus Topics, and finally
+   4. how to customize the solution 
 
 # Architecture
 
