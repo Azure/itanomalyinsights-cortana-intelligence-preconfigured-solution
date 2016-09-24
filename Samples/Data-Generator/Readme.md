@@ -11,6 +11,7 @@ Sample data generator is a desktop application which sends sample data to a succ
 1. Download data generator files from [GitHub location](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator).
 
 2. Launch application VisGenerator.exe from the local folder.
+Note: If you see a security warning like "The publisher could not be verified. Are you sure you want to run this software?". You will have to explicitly choose to procced further.
    
 3. Provide the following input and click on "Save Configuration Changes".
 This is a one-time setting, and will be persisted for future use. You can change the settings any time by stopping the data generator and modifying these inputs and saving them.
