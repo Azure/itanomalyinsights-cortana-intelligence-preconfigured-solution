@@ -1,8 +1,6 @@
 # IT Anomaly Insights Solution Scale and Pricing
 
-The solution deployed into your subscription consists of a number of Azure resources as described in
-
-IT Anomaly Insights Solution [document](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#it-anomaly-insights-solution) , which determines scale supported by the solution and also contribute to total cost of the deployed solution.
+The solution deployed into your subscription consists of a number of Azure resources as described in IT Anomaly Insights Solution [document](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#it-anomaly-insights-solution) , which determines scale supported by the solution and also contribute to total cost of the deployed solution.
 
 ## Scale Limits
 
