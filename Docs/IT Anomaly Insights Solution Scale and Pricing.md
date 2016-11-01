@@ -43,7 +43,7 @@ The cost of running a solution depends on per service rate for each of the servi
 Below table gives a price estimation for various workload profiles.
 
 | Pipeline frequency | Estimated Monthly Cost ($) |
-| :---: | :---: |
+| :--- | :--- |
 | Near real time (every 15 minutes) | **~3000** |
 | Hourly | **~3000** |
 | Daily | **~300** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See section Optimizing Resource Utilization for more details. |
