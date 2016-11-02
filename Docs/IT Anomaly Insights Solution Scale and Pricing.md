@@ -55,6 +55,10 @@ Below table gives a price estimation for various workload profiles.
 
 Depending on the scenario for which the solution is used, usage may vary in terms of volume of incoming events and/or frequency at which the results are expected. Based on your scenario, solution can be customized further as below.
 
+## Pipeline Frequency Settings
+
+By default, solution is configured to produce results every 15 minutes. This frequency can be customized based on scenario, for example to run once daily. This can be achieved by modifying scheduler settings in Azure Data Factory in the deployed solution. More details on Azure Data Factory scheduler settings can be found [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-scheduling-and-execution/).
+
 ## Compute Resource Settings
 
 ### Time to live for on-demand HDInsight Cluster
