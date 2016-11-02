@@ -14,7 +14,7 @@ Overall, at every step, components in solution process data on a per metric basi
 
 ### Recommendation
 
-For near real time scenarios where the pipeline is running as frequently as possible, we recommend not have more than 5000 unique metrics in data. This is to ensure that the data can be processed well in time before the next execution begins such that the results are available every 15 minutes.
+For near real time scenarios where the pipeline is running as frequently as possible, we recommend not have more than 5000 unique metrics in data. This is to ensure that the current slice of data can be processed before the next slice begins i.e. within 15 minutes by default.
 
 For scaling beyond recommended limit, please email [adpcs\_support@microsoft.com](mailto:adpcs_support@microsoft.com) to explore other options.
 
@@ -49,7 +49,7 @@ Below table gives a price estimation for various workload profiles.
 | Daily | **~300** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See section Optimizing Resource Utilization for more details. |
 | Weekly | **~200** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See sectionOptimizing Resource Utilization for more details. |
 
-Note: Prices are estimates and are not intended as actual price quotes.
+**Note: Prices are estimates and are not intended as actual price quotes.**
 
 # Optimizing Resource Utilization
 
