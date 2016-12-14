@@ -87,11 +87,16 @@ The pipeline writes the scored results (e.g. alerts and anomaly scores detected 
 The Azure Data Factory service orchestrates the movement and processing of data. You can access the data factory(ex: demo12345adf) from the resource group on [Azure management portal](https://portal.azure.com/). The data factory datasets will show errors initially if the data is not being streamed to the pipeline. These can be ignored and will go away once the data appears on the input (Refer step 1 above). More info on monitoring and managing the ADF pipeline can be found  [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
 
-###Step 3: Visualize in Power BI
-Lastly, if the data is being sent to the pipeline(step 1) and flowing through the pipeline without errors (step 2), it can be visualized in Power BI using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI section](#pbi-setup) for details. 
+###Step 4: Viewing pipeline results in Power BI Embedded
+During the deployment a new [Power BI Embedded](https://docs.microsoft.com/en-us/azure/power-bi-embedded/power-bi-embedded-what-is-power-bi-embedded) workspace collection is provisioned. A dashboard for displaying pipeline results is uploaded to the newly provisioned Power BI Embedded Workspace and a website is deployed to your subscription to display the dashboard via the web browser. A link to the provisioned website is listed under "Next Steps" in CIS portal as shown below.
+
+![The link to provisioned website which displays provisioned Power BI Embedded dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/epbi_website_link.png)
+
+###Step 5: Viewing pipline results in Power BI Desktop
+Lastly, if the data is being sent to the pipeline(step 1) and flowing through the pipeline without errors (step 2), it can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI Desktop section](#pbi-desktop-setup) for details. 
 
 
-#### Power BI Dashboard <a id="pbi-setup"/>
+#### Power BI Dashboard <a id="pbi-desktop-setup"/>
 
 This section describes how to set up Power BI dashboard to visualize the results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
 
@@ -127,7 +132,7 @@ This section describes how to set up Power BI dashboard to visualize the results
 - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". 
 - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-###Step 4: (Optional) Pipeline Health Monitoring
+###Step 6: (Optional) Pipeline Health Monitoring
 
 This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to [Machine Learning - Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
@@ -150,7 +155,7 @@ Steps to set up a sample health dashboard are outlined below.
   
  The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
-###Step 5: (Optional) Integrating IT Anomaly Insights Results with On-premise Systems
+###Step 7: (Optional) Integrating IT Anomaly Insights Results with On-premise Systems
 IT Anomaly Insights solution publishes anomalies to Azure Service Bus Topic. This section covers steps to configure anomalies to publish to the Service Bus Topic, and how to integrate with Service Bus Topics.
 
 #### Configuring anomaly publishing to Service Bus Topic
