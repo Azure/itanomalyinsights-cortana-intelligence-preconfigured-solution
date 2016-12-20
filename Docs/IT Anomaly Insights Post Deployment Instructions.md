@@ -4,9 +4,9 @@
 
 The IT Anomaly Insights Solution will deploy an end to end solution into your subscription. The goal of this document is to explain
    1. the reference architecture and different azure components provisioned as part of the deployment
-   2. how to start sending sample data or real data to the solution to gather anomaly insights
-   3. how to consume the results using pre-built Power BI dashboard and alerts using Service Bus Topics, and finally
-   4. how to customize the solution 
+   1. how to start sending sample data or real data to the solution to gather anomaly insights
+   1. how to consume the results using pre-built Power BI dashboard and alerts using Service Bus Topics, and finally
+   1. how to customize the solution 
 
 # Architecture
 
@@ -37,7 +37,13 @@ The ADF also publishes any anomalies detected in the current slice to [Service B
 ## Data Consumption
 
 ####Power BI
-The solutions offers a pre-built [Power BI](https://powerbi.microsoft.com/) dashboard template that can be linked to the deployed and loaded with real time data from your deployment. The dashboard shows views over the raw time series that are monitored by the pipeline and any anomalies detected by the Anomaly Detection API.  The data for the dashboard is sourced from [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that is deployed with the solution. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
+The solutions offers two options for visualizing the data and insights in Power BI.
+
+1. an embedded Power BI hosted on a website and deployed as part of the solution.
+
+1. a prebuilt [Power BI template](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) which can be linked to the deployed solution and loaded with real time data from the deployment. Use this option if you need to customize the dashboard to fit your needs. 
+
+These dashboards show views over the raw time series that are monitored by the pipeline and any anomalies detected by the Anomaly Detection API.  The data for the dashboard is sourced from [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) that is deployed with the solution. For Instructions on how to use the Power BI dashboard for this solution, refer to the section below.
 
 # Getting Started After Deployment
 
@@ -87,18 +93,19 @@ The pipeline writes the scored results (e.g. alerts and anomaly scores detected 
 The Azure Data Factory service orchestrates the movement and processing of data. You can access the data factory(ex: demo12345adf) from the resource group on [Azure management portal](https://portal.azure.com/). The data factory datasets will show errors initially if the data is not being streamed to the pipeline. These can be ignored and will go away once the data appears on the input (Refer step 1 above). More info on monitoring and managing the ADF pipeline can be found  [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
 
 
-###Step 4: Viewing pipeline results in Power BI Embedded
+###Step 3: Viewing pipeline results in Power BI Embedded
+If the data is being sent to the pipeline(step 1) and flowing through the pipeline without errors (step 2), it can be visualized in Power BI.
 During the deployment a new [Power BI Embedded](https://docs.microsoft.com/en-us/azure/power-bi-embedded/power-bi-embedded-what-is-power-bi-embedded) workspace collection is provisioned. A dashboard for displaying pipeline results is uploaded to the newly provisioned Power BI Embedded Workspace and a website is deployed to your subscription to display the dashboard via the web browser. A link to the provisioned website is listed under "Next Steps" in CIS portal as shown below.
 
 ![The link to provisioned website which displays provisioned Power BI Embedded dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/epbi_website_link.png)
 
-###Step 5: Viewing pipline results in Power BI Desktop
-Lastly, if the data is being sent to the pipeline(step 1) and flowing through the pipeline without errors (step 2), it can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI Desktop section](#pbi-desktop-setup) for details. 
+###Step 4 : (optional) Viewing pipline results in Power BI Desktop
+Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI Desktop section](#pbi-desktop-setup) for details. 
 
 
-#### Power BI Dashboard <a id="pbi-desktop-setup"/>
+#### Using Power BI template for dashboard<a id="pbi-desktop-setup"/>
 
-This section describes how to set up Power BI dashboard to visualize the results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
+This section describes how to set up dashboard in Power BI Desktop to visualize the results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
 
 1) Get the database server name, database name, user name and password from the [deployment summary page](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs) on CIS
 ![SQL Database credentials in deployment summary page](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
@@ -132,7 +139,7 @@ This section describes how to set up Power BI dashboard to visualize the results
 - Expand the **Schedule Refresh** section. Turn on "keep your data up-to-date". 
 - Schedule the refresh based on your needs. To find more information, see [Data refresh in Power BI](https://powerbi.microsoft.com/documentation/powerbi-refresh-data/).
 
-###Step 6: (Optional) Pipeline Health Monitoring
+###Step 5: (Optional) Pipeline Health Monitoring
 
 This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to [Machine Learning - Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
