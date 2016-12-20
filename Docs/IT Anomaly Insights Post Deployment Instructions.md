@@ -1,4 +1,4 @@
-[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
+﻿[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
 ============================================
 # Overview
 
@@ -26,7 +26,10 @@ The [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a hi
 The [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service is used to aggregate the raw incoming data from the event hubs at 5 mins interval and store it to [Azure Storage](https://azure.microsoft.com/services/storage/) for later processing by [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service. This job also pushes the time series data to SQL DB to visualize in PowerBI. 
 
 ####Azure Data Factory
-The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) from Azure Machine Learning for detecting anomalous events and then publishes the results. 
+The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to Azure Machine Learning Web Services deployed in your solution for detecting anomalous events and then publishes the results. 
+
+####Azure Machine Learning Web Service
+The new [Azure Machine Learning Web Service](https://services.azureml.net/quickstart) deploys the [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) into your subscription as part of the deployed solution. The solution will have both non-seasonal and seasonal anomaly detection web services. The default end to end solution uses the non-seasonal web service. More details on customizing the solution to use seasonal web service can be found below. You can manage and monitor the web services via the new [Azure Machine Learning Web Services portal](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-manage-new-webservice). 
 
 ## Data Publishing
 
@@ -61,13 +64,16 @@ This section describes how to bring your own data to Azure. As long as the event
 **Schema:**
 ```
 {
+	"Time": "Time of originating event. See note (optional)",
 	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
-	"Category": "Originating category of the event (optional)"
+	"Brand": "Originating brand of the event (optional)"
 }
 ```
+
+>Note: By default the event enqueue time is used. Please refer to customizations section for using time column in the event.
 
 The Azure Event Hub service is generic and can ingest data in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is published to it. You can find more details on how to send events or data to an Azure Event Hub in [Event Hub guide](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-programming-guide/).
 
@@ -185,19 +191,36 @@ Service Bus Topics are also supported in Azure WebJobs (see [documentation](http
 Customers who do not have existing infrastructure are encouraged to try [Azure Functions](https://azure.microsoft.com/en-us/documentation/articles/functions-reference/). Azure Functions have built-in Service Bus [support](https://azure.microsoft.com/en-us/documentation/articles/functions-bindings-service-bus/) and allow users to start receiving and processing messages without the cost of infrastructure setup and maintenance. 
 
 
-# Customizing Solution: Adding new dimensions
+# Customizing Solution
+
+## Using event time
+ 
+**Modify Azure Stream Analytics job** 
+    
+1. In Azure portal click "Resource groups" and find the resource group that has the same name as your solution. The resource group should contain one Stream Analytics resource. Click on it.
+    
+   ![Resource Groups in Azure Portal with Stream Analytics resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_resource.png)
+
+2. Stop the Stream Analytics job and click "Query" under "Job Topology".
+    
+   ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+    
+
+4. Save your changes and re-start Stream Analytics job.
+
+##Adding new dimensions
 
 Suppose that in our Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying Power BI dashboard.
 
 Each event will need to report the region where it originates. Therefore, the event schema above will need to be modified to add "Region" field as follows.
 
-```json
+```
 {
 	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
-	"Category": "Originating category of the event (optional)",
+	"Brand": "Originating brandof the event (optional)",
 	"Region": "Originating region of the event (optional)"
 }
 ```
@@ -282,4 +305,54 @@ Each event will need to report the region where it originates. Therefore, the ev
     ![Event breakdown by regions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_add_visualization.png)
 
 
+
+##Using Seasonal Anomaly Detection Web Service
+The solution comes with both non-seasonal and seasonal anomaly detection web services. Based on the characteristics of the data, you might want to pick the right web service. For seasonal data, below are the steps to configure the solution to use the seasonal endpoint.
+
+Step 1: Get the Anomaly Detection Seasonal Web Service API URL from the deployment summary page on [CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs)
+
+Step 2: Sign into Azure ML Web services portal and go to the seasonal web service URI obtained from step 1. Get the Primary Key and Request Response endpoint for the Seasonality Web Service.
+
+Step 3: Modify ADF to use the seasonal web service API and key along with the right parameter for the anomaly detection seasonality models.
+
+1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
+   
+  ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
+
+2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
+   
+   ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
+
+3. Azure Data Factory pipeline definition will appear on the right-most blade. 
+   
+4. Look for “AnalyzeData” activity and update the following parameters
+	- **entryPoint**: Activity entry point
+	- **mLEndpointBatchLocation**: Azure ML Web Service Seasonality Request Response API (Note: make sure to remove  ‘&swagger=true’ at the end of the URL)
+	- **mLEndpointKey**: Primary web service Key 
+	- **mLParams**: parameters to the seasonality API. The below highlighted shows the required changes in the pipeline activity code
+
+```
+	{
+                "type": "DotNetActivity",
+                "typeProperties": {
+                    "assemblyName": "AnomalyDetectionCustomActivities.dll",
+                    "entryPoint": " AnomalyDetectionCustomActivity.Activities.AzureMlWebServiceSeasonalityActivity",
+                    "packageLinkedService": "AzureStorage-LinkedService",
+                    "packageFile": "anomalydetection/AnomalyDetectionCustomActivity.zip",
+                    "extendedProperties": {
+                        "telemetryInstrumentationKey": "****",
+                        "mLEndpointBatchLocation": "<Azure ML Web Service Seasonality API  for Request Response",
+                        "mLEndpointKey": "<Primary key for above AML web service>",
+                        "mLParams": "{\"postprocess.tailRows\": 0, \"preprocess.aggregationInterval\": 0, \"preprocess.aggregationFunc\": \"mean\", \"preprocess.replaceMissing\": \"lkv\", \"seasonality.enable\": true, \"seasonality.numSeasonality\": 2, \"seasonality.transform\": \"deseason\", \"tspikedetector.sensitivity\": 3, \"zspikedetector.sensitivity\": 3, \"detectors.spikesdips\": \"Both\", \"detectors.historywindow\": 500, \"upleveldetector.sensitivity\": 3.25, \"bileveldetector.sensitivity\": 3.25, \"trenddetector.sensitivity\": 3.25 }",
+                        "timeseriesStartTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', Time.AddHours(SliceEnd, -72))",
+                        "timeseriesEndTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', SliceEnd)"
+                 }
+	}
+```
+   Refer to the 'Output' section on [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) to understand the column names and their meaning
+
+   ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
+5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
+    
+   ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
 
