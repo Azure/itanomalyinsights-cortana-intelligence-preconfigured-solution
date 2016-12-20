@@ -353,8 +353,5 @@ Step 3: Modify ADF to use the seasonal web service API and key along with the ri
 ```
    Refer to the 'Output' section on [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) to understand the column names and their meaning
 
-   ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
 5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
-    
-   ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
 
