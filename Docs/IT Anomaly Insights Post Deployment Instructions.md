@@ -10,7 +10,7 @@ The IT Anomaly Insights Solution will deploy an end to end solution into your su
 
 # Architecture
 
-The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection).  
+The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2).  
 
 
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
@@ -26,12 +26,12 @@ The [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a hi
 The [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service is used to aggregate the raw incoming data from the event hubs at 5 mins interval and store it to [Azure Storage](https://azure.microsoft.com/services/storage/) for later processing by [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service. This job also pushes the time series data to SQL DB to visualize in PowerBI. 
 
 ####Azure Data Factory
-The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) from Azure Machine Learning for detecting anomalous events and then publishes the results. 
+The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) from Azure Machine Learning for detecting anomalous events and then publishes the results. 
 
 ## Data Publishing
 
 ####Azure SQL Database Service and Service Bus Topics 
-The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
+The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
 The ADF also publishes any anomalies detected in the current slice to [Service Bus Topics](https://azure.microsoft.com/en-us/documentation/services/service-bus/). These anomaly messages can be subscribed to and consumed by variety of applications such as ticketing systems, chat clients, mobile apps, pagers, etc. 
 
 ## Data Consumption
