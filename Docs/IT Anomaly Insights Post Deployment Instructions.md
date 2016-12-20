@@ -194,6 +194,7 @@ Customers who do not have existing infrastructure are encouraged to try [Azure F
 # Customizing Solution
 
 ## Using event time
+By default, events are timestamped based on their arrival time to the Event Hub. But in some scenarios, the time at which the event occured might be more useful. For such cases, we can modify the solution to use the time column in the event by simply adding the 'TIMESTAMP BY Time" clause in the Azure Stream Analytics job which processes the input events. For this, make sure that the events have this Time field present and have valid datetime value.
  
 **Modify Azure Stream Analytics job** 
     
@@ -205,6 +206,7 @@ Customers who do not have existing infrastructure are encouraged to try [Azure F
     
    ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
     
+3. The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify all the three queries to add a "TIMESTAMP BY Time" clause like in the sample query [here](https://msdn.microsoft.com/en-us/library/azure/mt573293.aspx).
 
 4. Save your changes and re-start Stream Analytics job.
 
