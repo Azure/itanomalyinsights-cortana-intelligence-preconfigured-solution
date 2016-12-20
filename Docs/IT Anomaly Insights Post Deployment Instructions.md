@@ -100,7 +100,7 @@ During the deployment a new [Power BI Embedded](https://docs.microsoft.com/en-us
 ![The link to provisioned website which displays provisioned Power BI Embedded dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/epbi_website_link.png)
 
 ###Step 4 : (optional) Viewing pipline results in Power BI Desktop
-Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github. See [PBI Desktop section](#pbi-desktop-setup) for details. 
+Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github.  
 
 
 #### Using Power BI template for dashboard<a id="pbi-desktop-setup"/>
@@ -199,7 +199,7 @@ Customers who do not have existing infrastructure are encouraged to try [Azure F
 
 # Customizing Solution: Adding new dimensions
 
-Suppose that in our Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying Power BI dashboard.
+Suppose that in Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying [Power BI template](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix).
 
 Each event will need to report the region where it originates. Therefore, the event schema above will need to be modified to add "Region" field as follows.
 
@@ -277,7 +277,7 @@ Each event will need to report the region where it originates. Therefore, the ev
 
 3. **Modify Power BI dashboard**
 
-    Finally, we will add a visualization in our Power BI dashboard which will display event counts grouped by region. Note that having Power BI dashboard connect to your Azure SQL database is a prerequisite for this step. If you haven't done that yet, please refer to the [instructions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/ryumbra-schema-mod/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#power-bi-dashboard) on how to do it.
+    Finally, we will add a visualization in our Power BI dashboard which will display event counts grouped by region. Note that having Power BI dashboard connect to your Azure SQL database is a prerequisite for this step. If you haven't done that yet, please refer to the [instructions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#power-bi-dashboard-) on how to do it.
 
     Open your Power BI dashboard and click "Edit Queries".
     
