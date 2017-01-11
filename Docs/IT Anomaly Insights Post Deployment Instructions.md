@@ -10,7 +10,7 @@ The IT Anomaly Insights Solution will deploy an end to end solution into your su
 
 # Architecture
 
-The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection).  
+The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2).  
 
 
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
@@ -35,7 +35,7 @@ The new [Azure Machine Learning Web Service](https://services.azureml.net/quicks
 ## Data Publishing
 
 ####Azure SQL Database Service and Service Bus Topics 
-The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://datamarket.azure.com/dataset/aml_labs/anomalydetection) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
+The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
 The ADF also publishes any anomalies detected in the current slice to [Service Bus Topics](https://azure.microsoft.com/en-us/documentation/services/service-bus/). These anomaly messages can be subscribed to and consumed by variety of applications such as ticketing systems, chat clients, mobile apps, pagers, etc. 
 
 ## Data Consumption
@@ -87,7 +87,7 @@ The Azure Event Hub service is generic and can ingest data in either CSV or JSON
 
 Once the data generator/data source starts sending events, the pipeline starts getting hydrated and the different components of the solution start kicking into action following the commands issued by the Data Factory. The pipeline progress can be monitored using one or more of the following options: 
 #### 1. **Check input data in Azure Table Storage and Azure SQL Database**
-The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
+The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
 You can also check the SQL database by and locating your database(ex: demo123456db) and connecting to it using the SQL server username and password provided on the CIS portal. Once connected, you can check **“AdditionalInfo”** table for records populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
 
 #### 2. **Check the results output data from Azure SQL Database**
@@ -111,7 +111,7 @@ Optionally, the data and insights can be visualized in Power BI Desktop using th
 
 This section describes how to set up dashboard in Power BI Desktop to visualize the results of the pipeline. Power BI connects to an Azure SQL database as its data source, where the Machine Learning score results are stored. Below are the steps to setup the Power BI dashboard.
 
-1) Get the database server name, database name, user name and password from the [deployment summary page](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs) on CIS
+1) Get the database server name, database name, user name and password from the [deployment summary page](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2) on CIS
 ![SQL Database credentials in deployment summary page](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
 2) Update the data source of the Power BI file.
  - Make sure you have the latest version of [Power BI desktop](https://powerbi.microsoft.com/desktop) installed.
@@ -145,7 +145,7 @@ This section describes how to set up dashboard in Power BI Desktop to visualize 
 
 ###Step 5: (Optional) Pipeline Health Monitoring
 
-This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to [Machine Learning - Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
+This section outlines the steps to setup health monitoring for the pipeline in production. Anomaly Detection scoring activity runs inside Azure Data Factory. It fetches input data from Azure Table Storage, passes that data to [Machine Learning - Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) for scoring and persists the results in Azure SQL database. Metrics are tracked for every service call and the collected telemetry data is sent to Application Insights (AI) which allows setting up monitoring dashboards and alarms.
 
 Steps to set up a sample health dashboard are outlined below.
   1. The name of Application Insights account will be displayed on the deployment summary page in Cortana Intelligence Solution. Make a note of it.
@@ -183,7 +183,7 @@ Follow the instructions below to configure the types of anomalies (i.e. spikes, 
    
   4. Look for “anomalyQuery” parameter under “PublishAnomalies” activity. This query will be run against Azure SQL database where Anomaly Detection results are stored. One Service Bus Topic message will be published for each row returned by the query.
     
-   The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish spike anomalies. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) to publish to Service Bus. (Refer to the 'Output' section on [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) to understand the column names and their meaning)
+   The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish spike anomalies. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) to publish to Service Bus. (Refer to the 'Output' section on [Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) to understand the column names and their meaning)
 
    ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
   5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
@@ -303,7 +303,7 @@ Each event will need to report the region where it originates. Therefore, the ev
 # Customizing Solution: Using Seasonal Anomaly Detection Web Service
 The solution comes with both non-seasonal and seasonal anomaly detection web services. Based on the characteristics of the data, you might want to pick the right web service. For seasonal data, below are the steps to configure the solution to use the seasonal endpoint.
 
-Step 1: Get the Anomaly Detection Seasonal Web Service API URL from the deployment summary page on [CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs)
+Step 1: Get the Anomaly Detection Seasonal Web Service API URL from the deployment summary page on [CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2)
 
 Step 2: Sign into Azure ML Web services portal and go to the seasonal web service URI obtained from step 1. Get the Primary Key and Request Response endpoint for the Seasonality Web Service.
 
@@ -323,7 +323,7 @@ Step 3: Modify ADF to use the seasonal web service API and key along with the ri
 	- **entryPoint**: Activity entry point
 	- **mLEndpointBatchLocation**: Azure ML Web Service Seasonality Request Response API (Note: make sure to remove  ‘&swagger=true’ at the end of the URL)
 	- **mLEndpointKey**: Primary web service key 
-	- **mLParams**: Parameters to the seasonality API. For more information on the API, refer to [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) documentation page.
+	- **mLParams**: Parameters to the seasonality API. For more information on the API, refer to [Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) documentation page.
 	
 	The below snippet shows the required changes in the pipeline activity code
 
