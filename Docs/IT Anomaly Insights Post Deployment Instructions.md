@@ -1,4 +1,4 @@
-[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
+﻿[IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b)
 ============================================
 # Overview
 
@@ -26,15 +26,16 @@ The [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a hi
 The [Azure Stream Analytics](https://azure.microsoft.com/services/stream-analytics/) service is used to aggregate the raw incoming data from the event hubs at 5 mins interval and store it to [Azure Storage](https://azure.microsoft.com/services/storage/) for later processing by [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service. This job also pushes the time series data to SQL DB to visualize in PowerBI. 
 
 ####Azure Data Factory
+
 The [Azure Data Factory](https://azure.microsoft.com/documentation/services/data-factory/) service orchestrates the movement and processing of data. The data factory is made up of [pipelines](https://azure.microsoft.com/en-us/documentation/articles/data-factorydata-factory-create-pipelines/) and activities for preparing, analyzing and publishing results. It uses custom activities to read raw data from the input storage tables, prepare individual time series datasets, makes calls to [Anomaly Detection Web Services](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) deployed in your solution for detecting anomalous events and then publishes the results. 
 
 ####Azure Machine Learning Web Service
 The new [Azure Machine Learning Web Service](https://services.azureml.net/quickstart) deploys the [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) into your subscription as part of the deployed solution. The solution will have both non-seasonal and seasonal anomaly detection web services. The default end to end solution uses the non-seasonal web service. More details on customizing the solution to use seasonal web service can be found below. You can manage and monitor the web services via the new [Azure Machine Learning Web Services portal](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-manage-new-webservice). 
 
-
 ## Data Publishing
 
 ####Azure SQL Database Service and Service Bus Topics 
+
 The [Azure SQL Database](https://azure.microsoft.com/services/sql-database/) service is used to store the raw time series and the anomaly scores received from the [Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) so that they can be visualized in [Power BI](https://powerbi.microsoft.com/) dashboard. 
 The ADF also publishes any anomalies detected in the current slice to [Service Bus Topics](https://azure.microsoft.com/en-us/documentation/services/service-bus/). These anomaly messages can be subscribed to and consumed by variety of applications such as ticketing systems, chat clients, mobile apps, pagers, etc. 
 
@@ -71,13 +72,16 @@ This section describes how to bring your own data to Azure. As long as the event
 **Schema:**
 ```
 {
+	"Time": "Time of originating event. See note (optional)",
 	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
-	"Category": "Originating category of the event (optional)"
+	"Brand": "Originating brand of the event (optional)"
 }
 ```
+
+>Note: By default the event enqueue time is used. Please refer to customizations section for using time column in the event.
 
 The Azure Event Hub service is generic and can ingest data in either CSV or JSON format. No special processing occurs in the Azure Event Hub, but it is important you understand the data that is published to it. You can find more details on how to send events or data to an Azure Event Hub in [Event Hub guide](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-programming-guide/).
 
@@ -201,19 +205,38 @@ Service Bus Topics are also supported in Azure WebJobs (see [documentation](http
 Customers who do not have existing infrastructure are encouraged to try [Azure Functions](https://azure.microsoft.com/en-us/documentation/articles/functions-reference/). Azure Functions have built-in Service Bus [support](https://azure.microsoft.com/en-us/documentation/articles/functions-bindings-service-bus/) and allow users to start receiving and processing messages without the cost of infrastructure setup and maintenance. 
 
 
-# Customizing Solution: Adding new dimensions
+# Customizing Solution
+
+## Using event time
+By default, events are timestamped based on their arrival time to the Event Hub. But in some scenarios, the time at which the event occured might be more useful. For such cases, we can modify the solution to use the time column in the event by simply adding the 'TIMESTAMP BY Time" clause in the Azure Stream Analytics job which processes the input events. For this, make sure that the events have this Time field present and have valid datetime value.
+ 
+**Modify Azure Stream Analytics job** 
+    
+1. In Azure portal click "Resource groups" and find the resource group that has the same name as your solution. The resource group should contain one Stream Analytics resource. Click on it.
+    
+   ![Resource Groups in Azure Portal with Stream Analytics resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_resource.png)
+
+2. Stop the Stream Analytics job and click "Query" under "Job Topology".
+    
+   ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+    
+3. The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify all the three queries to add a "TIMESTAMP BY Time" clause like in the sample query [here](https://msdn.microsoft.com/en-us/library/azure/mt573293.aspx).
+
+4. Save your changes and re-start Stream Analytics job.
+
+##Adding new dimensions
 
 Suppose that in Power BI dashboard we want to see event breakdown by geographic region. This section will guide you through the steps to customize your deployed solution and the accompanying [Power BI template](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix).
 
 Each event will need to report the region where it originates. Therefore, the event schema above will need to be modified to add "Region" field as follows.
 
-```json
+```
 {
 	"Host": "Hostname (required)",
 	"Metric": "Counter/metric name (required)",
 	"Value": "Numeric value (required)",
 	"Application": "Originating application of the event (optional)",
-	"Category": "Originating category of the event (optional)",
+	"Brand": "Originating brandof the event (optional)",
 	"Region": "Originating region of the event (optional)"
 }
 ```

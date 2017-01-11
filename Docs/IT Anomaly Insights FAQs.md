@@ -14,5 +14,5 @@ Here are the most frequently encountered issues when deploying the solution:
 
 > **Solution:** The solution deploys multiple Azure resources as part of the deployment and customers may notice longer durations occasionally especially in some busy Azure regions. Please try a different region if that is possible or contact us.
 
-Please, feel free to [contact us](adpcs_support@microsoft.com) with any additional questions you might have.
+Please, feel free to [contact us](mailto:adpcs_support@microsoft.com) with any additional questions you might have.
 Thanks!

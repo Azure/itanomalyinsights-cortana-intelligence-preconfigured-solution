@@ -2,7 +2,7 @@
 
 The solution deployed into your subscription consists of a number of Azure resources as described in IT Anomaly Insights Solution [document](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/IT%20Anomaly%20Insights%20Post%20Deployment%20Instructions.md#it-anomaly-insights-solution) , which determines scale supported by the solution and also contribute to total cost of the deployed solution.
 
-## Scale Limits
+## Description
 
 The deployed solution consists of a number of Azure resources and each resource has certain scale limitation based on its performance tier. Let&#39;s take a closer look into how data is processed by each of these pipeline components; define the scale unit and lastly understand scale limits of the solution.
 
@@ -12,9 +12,15 @@ The solution ingests events via event hub which is consumed by downstream compon
 
 Overall, at every step, components in solution process data on a per metric basis and hence we use number of unique metrics in data as a way to measure scalability of solution.
 
-### Recommendation
+### Scale Limits
 
-For near real time scenarios where the pipeline is running as frequently as possible, we recommend not have more than 5000 unique metrics in data. This is to ensure that the current slice of data can be processed before the next slice begins i.e. within 15 minutes by default.
+For near real time scenarios where the pipeline is running as frequently as possible (currently every 15 minutes is the lowest it can go), the solution supports 30 unique metrics by default. This can be scaled easily up to 5000 unique metrics by simply upgrading the Azure Machine Learning web service commitment plan accordingly. In order to pick the right pricing plan, we will have to estimate the number of transactions or number of API calls that the solution will process in a month. 
+
+Example: Number of transactions for a solution that handles 600 unique metrics in near real time (run every 15 mins) = 600 * 4 * 24 * 31 ~ 1.8 million transactions per month. Hence, we will have to upgrade the Azure Commitment Plan to Standard S2 plan that includes up to 2 million API calls per month.
+
+More information on various pricing plans available [here](https://azure.microsoft.com/en-us/pricing/details/machine-learning/). 
+
+To upgrade/downgrade Azure ML Commitment Plan, first get the Commitment Plan name from [solution deployment summary page](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2). Then log into Azure Machine Learning Web Services portal and navigate to [Plans](https://services.azureml.net/plans/) page. Under available plans, select the Commitment Plan for your solution and click on UPGRADE/DOWNGRADE option. Here you should be able to select the required plan and then save changes.
 
 For scaling beyond recommended limit, please email [adpcs\_support@microsoft.com](mailto:adpcs_support@microsoft.com) to explore other options.
 
@@ -24,7 +30,7 @@ The cost of running a solution depends on per service rate for each of the servi
 
 ### Azure Services
 
-1. Storage account [Total: 1, Performance: Standard LRS]
+1. Azure Machine Learning Web Services [Total: 2, Pricing tier: Standard S1]
 
 2. Azure Event Hubs [Total: 1, Pricing tier: Standard]
 
@@ -40,14 +46,16 @@ The cost of running a solution depends on per service rate for each of the servi
 
 8. Azure Web Jobs [Total: 1, Pricing tier: Standard S1]
 
+9. Storage account [Total: 1, Performance: Standard LRS]
+
 Below table gives a price estimation for various workload profiles.
 
 | Pipeline frequency | Estimated Monthly Cost ($) |
 | :--- | :--- |
-| Near real time (every 15 minutes) | **~3000** |
-| Hourly | **~3000** |
-| Daily | **~300** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See section Optimizing Resource Utilization for more details. |
-| Weekly | **~200** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See sectionOptimizing Resource Utilization for more details. |
+| Near real time (every 15 minutes) | **~3100** |
+| Hourly | **~3100** |
+| Daily | **~400** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See section Optimizing Resource Utilization for more details. |
+| Weekly | **~300** \*ADF on-demand HDInsight cluster time to live set to 1 hr. See section Optimizing Resource Utilization for more details. |
 
 **Note: Prices are estimates and are not intended as actual price quotes.**
 
