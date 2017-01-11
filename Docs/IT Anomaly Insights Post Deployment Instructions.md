@@ -207,6 +207,7 @@ Customers who do not have existing infrastructure are encouraged to try [Azure F
 
 # Customizing Solution
 
+
 ## Using event time
 By default, events are timestamped based on their arrival time to the Event Hub. But in some scenarios, the time at which the event occured might be more useful. For such cases, we can modify the solution to use the time column in the event by simply adding the 'TIMESTAMP BY Time" clause in the Azure Stream Analytics job which processes the input events. For this, make sure that the events have this Time field present and have valid datetime value.
  
@@ -257,8 +258,7 @@ Each event will need to report the region where it originates. Therefore, the ev
     ALTER VIEW [dbo].[view_AdditionalInfo]
     AS
     (
-        SELECT 
-            [InputTimestamp],
+        SELECT             [InputTimestamp],
             [HostnameMetricname],
             [MetricName],
             [HostName],
@@ -281,8 +281,7 @@ Each event will need to report the region where it originates. Therefore, the ev
 
     Stop the Stream Analytics job and click "Query" under "Job Topology".
     
-
-![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+    ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
     
     The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify the third query to match the query below:
    
@@ -362,7 +361,7 @@ Step 3: Modify ADF to use the seasonal web service API and key along with the ri
                         "telemetryInstrumentationKey": "****",
                         "mLEndpointBatchLocation": "<Azure ML Web Service Seasonality API  for Request Response",
                         "mLEndpointKey": "<Primary key for above AML web service>",
-                        "mLParams": "{\"postprocess.tailRows\": 0, \"preprocess.aggregationInterval\": 0, \"preprocess.aggregationFunc\": \"mean\", \"preprocess.replaceMissing\": \"lkv\", \"seasonality.enable\": true, \"seasonality.numSeasonality\": 2, \"seasonality.transform\": \"deseason\", \"tspikedetector.sensitivity\": 3, \"zspikedetector.sensitivity\": 3, \"detectors.spikesdips\": \"Both\", \"detectors.historywindow\": 500, \"upleveldetector.sensitivity\": 3.25, \"bileveldetector.sensitivity\": 3.25, \"trenddetector.sensitivity\": 3.25 }",
+                        "mLParams": "{\"postprocess.tailRows\": 0, \"preprocess.aggregationInterval\": 0, \"preprocess.aggregationFunc\": \"mean\", \"preprocess.replaceMissing\": \"lkv\", \"seasonality.enable\": true, \"seasonality.numSeasonality\": 2, \"seasonality.transform\": \"deseason\", \"tspikedetector.sensitivity\": 3, \"zspikedetector.sensitivity\": 3, \"detectors.spikesdips\": \"Both\", \"detectors.historywindow\": 500, \"negtrenddetector.sensitivity\": 3.25, \"bileveldetector.sensitivity\": 3.25, \"postrenddetector.sensitivity\": 3.25 }",
                         "timeseriesStartTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', Time.AddHours(SliceEnd, -72))",
                         "timeseriesEndTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', SliceEnd)"
                  }
