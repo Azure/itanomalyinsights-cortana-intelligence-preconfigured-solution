@@ -254,7 +254,8 @@ Each event will need to report the region where it originates. Therefore, the ev
 
     Stop the Stream Analytics job and click "Query" under "Job Topology".
     
-    ![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
+
+![Stream Analytics Azure Portal blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_SA_blade.png)
     
     The blade that opens will have three Azure Stream Analytics queries (for more information on syntax, please refer to [Stream Analytics Query Language Reference](https://msdn.microsoft.com/en-us/library/azure/dn834998.aspx)). Modify the third query to match the query below:
    
@@ -295,3 +296,50 @@ Each event will need to report the region where it originates. Therefore, the ev
 
 
 
+# Customizing Solution: Using Seasonal Anomaly Detection Web Service
+The solution comes with both non-seasonal and seasonal anomaly detection web services. Based on the characteristics of the data, you might want to pick the right web service. For seasonal data, below are the steps to configure the solution to use the seasonal endpoint.
+
+Step 1: Get the Anomaly Detection Seasonal Web Service API URL from the deployment summary page on [CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcs)
+
+Step 2: Sign into Azure ML Web services portal and go to the seasonal web service URI obtained from step 1. Get the Primary Key and Request Response endpoint for the Seasonality Web Service.
+
+Step 3: Modify ADF to use the seasonal web service API and key along with the right parameter for the anomaly detection seasonality models.
+
+1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
+   
+  ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
+
+2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
+   
+   ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
+
+3. Azure Data Factory pipeline definition will appear on the right-most blade. 
+   
+4. Look for “AnalyzeData” activity and update the following parameters
+	- **entryPoint**: Activity entry point
+	- **mLEndpointBatchLocation**: Azure ML Web Service Seasonality Request Response API (Note: make sure to remove  ‘&swagger=true’ at the end of the URL)
+	- **mLEndpointKey**: Primary web service key 
+	- **mLParams**: Parameters to the seasonality API. For more information on the API, refer to [Anomaly Detection API](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-apps-anomaly-detection/) documentation page.
+	
+	The below snippet shows the required changes in the pipeline activity code
+
+```
+	{
+                "type": "DotNetActivity",
+                "typeProperties": {
+                    "assemblyName": "AnomalyDetectionCustomActivities.dll",
+                    "entryPoint": " AnomalyDetectionCustomActivity.Activities.AzureMlWebServiceSeasonalityActivity",
+                    "packageLinkedService": "AzureStorage-LinkedService",
+                    "packageFile": "anomalydetection/AnomalyDetectionCustomActivity.zip",
+                    "extendedProperties": {
+                        "telemetryInstrumentationKey": "****",
+                        "mLEndpointBatchLocation": "<Azure ML Web Service Seasonality API  for Request Response",
+                        "mLEndpointKey": "<Primary key for above AML web service>",
+                        "mLParams": "{\"postprocess.tailRows\": 0, \"preprocess.aggregationInterval\": 0, \"preprocess.aggregationFunc\": \"mean\", \"preprocess.replaceMissing\": \"lkv\", \"seasonality.enable\": true, \"seasonality.numSeasonality\": 2, \"seasonality.transform\": \"deseason\", \"tspikedetector.sensitivity\": 3, \"zspikedetector.sensitivity\": 3, \"detectors.spikesdips\": \"Both\", \"detectors.historywindow\": 500, \"upleveldetector.sensitivity\": 3.25, \"bileveldetector.sensitivity\": 3.25, \"trenddetector.sensitivity\": 3.25 }",
+                        "timeseriesStartTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', Time.AddHours(SliceEnd, -72))",
+                        "timeseriesEndTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', SliceEnd)"
+                 }
+	}
+```
+
+Upon modifying the query, make sure to click the “Deploy” button to save the changes.
