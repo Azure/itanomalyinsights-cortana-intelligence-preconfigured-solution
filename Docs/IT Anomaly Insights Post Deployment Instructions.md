@@ -156,17 +156,19 @@ Steps to set up a sample health dashboard are outlined below.
   2. Navigate to  [Azure Management Portal](https://portal.azure.com/). and search for the AI account noted above.
   3. Once in the Application Insights blade, click on the "Metric Explorer" button.
     
-   ![Application Insights Metrics Explorer button] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
+   ![Application Insights Metrics Explorer button](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_bar.png)
+   
   4. You should see two blank charts under "Metric Explorer" blade. Click on the “Edit” link in the top right of a blank chart to configure it. 
    
-  ![Metrics Explorer Blade] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_metricsExplorer.png)
+  ![Metrics Explorer Blade](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_metricsExplorer.png)
+  
   5. Pipeline health metrics will be listed under "Custom" section.
    
-   ![Pipeline health metrics] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_CustomMetrics.png)
+   ![Pipeline health metrics](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_CustomMetrics.png)
 
   6. Below is a sample dashboard that gives users a high-level overview of scoring activity health. 
     
- ![Sample Pipeline Health Dashboard] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_sampleDashboard.png)
+ ![Sample Pipeline Health Dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/appInsights_sampleDashboard.png)
   
  The top chart shows the number of successful and failed Azure Data Factory activity runs. A failed activity run generally indicates that no data has been processed. The next chart below shows the number of successfully scored timeseries. An occasional timeseries evaluation failure is expected, the pipeline is built in such a way that any missing results will be recorded during the next activity run. The next chart shows the number of result rows written to the Azure SQL table. If all datapoints in this chart were zero, it would be an indication that new data stopped flowing into the pipeline. The bottom chart shows the number of anomalies that were successfully published to a Service Bus Topic. Note that non-zero values are expected only when anomalies are detected.
 
@@ -177,11 +179,11 @@ IT Anomaly Insights solution publishes anomalies to Azure Service Bus Topic. Thi
 Follow the instructions below to configure the types of anomalies (i.e. spikes, bi-level changes or slow trends) to publish to Service Bus Topics.
   1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
    
-  ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
+  ![How to find ADF resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
 
   2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
    
-   ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
+   ![ADF blades](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
 
   3. Azure Data Factory pipeline definition will appear on the right-most blade. 
    
@@ -189,10 +191,11 @@ Follow the instructions below to configure the types of anomalies (i.e. spikes, 
     
    The default query (`SELECT * FROM [dbo].[AdScoreResults] WHERE [ScoredTimeseriesEndTimestamp] > @startDateTime AND [ScoredTimeseriesEndTimestamp] <= @endDateTime AND [ZSpike] = 1`) will only publish spike anomalies. By modifying the query, the user can fine-tune which anomalies (spikes, level changes, trend, etc.) to publish to Service Bus. (Refer to the 'Output' section on [Anomaly Detection API](https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-apps-anomaly-detection-api) to understand the column names and their meaning)
 
-   ![ADF pipeline definition] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
+   ![ADF pipeline definition](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDef.png)
+   
   5. Upon modifying the query, make sure to click the “Deploy” button to save the changes.
     
-   ![ADF pipeline deploy] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
+   ![ADF pipeline deploy](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfPipelineDeploy.png)
 
 #### Receiving anomalies from Service Bus Topics
 
@@ -333,11 +336,10 @@ Step 3: Modify ADF to use the seasonal web service API and key along with the ri
 
 1. In Azure Portal navigate to the Resource Group bearing the name of your Cortana Intelligence Solutions project. Find the Data Factory resource.
    
-  ![How to find ADF resource] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
+  ![How to find ADF resource](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfLocation.png)
 
 2. Click the “Author and deploy” button. Expand “Pipelines” section and select “Anomaly-Detection-Pipeline”.
-   
-   ![ADF blades] (https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
+	![ADF blades](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/ServiceBus_adfBlades.png)
 
 3. Azure Data Factory pipeline definition will appear on the right-most blade. 
    
