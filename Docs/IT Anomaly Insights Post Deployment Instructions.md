@@ -324,6 +324,38 @@ Each event will need to report the region where it originates. Therefore, the ev
     ![Event breakdown by regions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SchemaChange_PBI_add_visualization.png)
 
 
+# Customizing Solution: (Optional) Switching to seasonal Anomaly Detection API
+
+The default  [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2) does not support seasonal time series. If your data has seasonal pattern, we can switch to the seasonal Anomaly Detection API that deployed to your subscription as well. You can find the 
+seasonality API and key with the Azure ML Web services portal (https://services.azureml.net).
+
+Following are the required fields to update the ADF pipeline (You can manage the ADF pipeline with Azure portal):
+
+	1. Pipeline entry point
+	2. ML Web Service endpoint 
+	3. ML Web service Key 
+	4. ML parameters
+
+Pipeline name: Anomaly-Detection-Pipeline (You can update the pipeline code in the Azure portal)
+ 
+The updated fields are shown in the following code:
+```json     
+        "type": "DotNetActivity",
+        "typeProperties": {
+        "assemblyName": "AnomalyDetectionCustomActivities.dll",
+        "entryPoint": " AnomalyDetectionCustomActivity.Activities.AzureMlWebServiceSeasonalityActivity",
+        "packageLinkedService": "AzureStorage-LinkedService",
+        "packageFile": "anomalydetection/AnomalyDetectionCustomActivity.zip",
+        "extendedProperties": {
+            "telemetryInstrumentationKey": "****",
+            "mLEndpointBatchLocation": "<Azure ML Web Service Seasonality API  for Request Response (Note: make sure to remove  ‘&swagger=true’ at the end of the URL)>",
+            "mLEndpointKey": "<Primary key for above AML web service>",
+            "mLParams": "{\"postprocess.tailRows\": 0, \"preprocess.aggregationInterval\": 0, \"preprocess.aggregationFunc\": \"mean\", \"preprocess.replaceMissing\": \"lkv\", \"seasonality.enable\": true, \"seasonality.numSeasonality\": 2, \"seasonality.transform\": \"deseason\", \"tspikedetector.sensitivity\": 3, \"zspikedetector.sensitivity\": 3, \"detectors.spikesdips\": \"Both\", \"detectors.historywindow\": 500, \"bileveldetector.sensitivity\": 3.25, \"postrenddetector.sensitivity\": 3.25, \"negtrenddetector.sensitivity\": 3.25 }",
+            "timeseriesStartTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', Time.AddHours(SliceEnd, -72))",
+            "timeseriesEndTime": "$$Text.Format('{0:yyyy-MM-ddTHH:mm:ss.fffffffZ}', SliceEnd)"
+                    }
+                	}
+```
 
 # Customizing Solution: Using Seasonal Anomaly Detection Web Service
 The solution comes with both non-seasonal and seasonal anomaly detection web services. Based on the characteristics of the data, you might want to pick the right web service. For seasonal data, below are the steps to configure the solution to use the seasonal endpoint.
