@@ -10,7 +10,7 @@ The IT Anomaly Insights Solution will deploy an end to end solution into your su
 
 # Architecture
 
-The architecture diagram shows various Azure services services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2).  
+The architecture diagram shows various Azure services that are deployed by [IT Anomaly Insights Solution](https://gallery.cortanaintelligence.com/solutiontemplate/c0cc7d49409b4be99fa99dcf8ccba98b) using [Cortana Intelligence Solutions](https://start.cortanaintelligence.com), and how they are connected to each other in the end to end solution.  The deployed Azure services include Storage, Event Hubs, Stream Analytics, HDInsight, Data Factory, Azure SQL DB, Application Insights and [Anomaly Detection API](https://gallery.cortanaintelligence.com/MachineLearningAPI/Anomaly-Detection-2).  
 
 
 ![IT Anomaly Insights Pipeline Architecture](https://az712634.vo.msecnd.net/solutiontemplates/IT_Operations_Insights_Preconfigured_Solution/Anomaly_detection_Topology1.png)
@@ -60,7 +60,7 @@ This will show all the resources under this resource groups on [Azure management
 Here are the next steps: 
 
 ### Step 1: Send data to the solution
-The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator), a desktop application, can be run locally to send real data or sample data to the event hub after successful deployment.  You will find the instructions to download and install this application from Data Generator Instructions (also available in GitHub). Please use the sample that comes with data generator for refering to schema. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub.
+The [sample data generator](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator), a desktop application, can be run locally to send real data or sample data to the event hub after successful deployment.  You will find the instructions to download and install this application from [Data Generator Instructions](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/tree/master/Samples/Data-Generator). Please use the sample that comes with data generator for referring to schema. Alternatively, you can use [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/) reference to get sample code for publishing data to event hub.
  
 #### How to bring your own data 
 This section describes how to bring your own data to Azure. As long as the events sent to Azure Event Hub follow the required schema, encoding and format, there are no changes required to get the pipeline running
@@ -91,11 +91,11 @@ The Azure Event Hub service is generic and can ingest data in either CSV or JSON
 
 Once the data generator/data source starts sending events, the pipeline starts getting hydrated and the different components of the solution start kicking into action following the commands issued by the Data Factory. The pipeline progress can be monitored using one or more of the following options: 
 #### 1. **Check input data in Azure Table Storage and Azure SQL Database**
-The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
+The Stream Analytics job writes aggregated incoming data to table storage and SQL database. To check this, first click on the [deployments in CIS](https://start.cortanaintelligence.com/Deployments?type=anomalydetectionpcsv2) to see the deployed solution and then on the resource group which takes you to [Azure management portal](https://portal.azure.com/). Once there, click on the storage account that starts with "stg" and click on **Tables**. In the next panel, check if you see the two tables **"asaEgressPartitions"** and **“asaEgress”**. for this, you can also use tools like [Azure Storage Explorer](http://storageexplorer.com/). If you see these tables and data, it indicates that the raw data is successfully being stored in table storage. 
 You can also check the SQL database by and locating your database(ex: demo123456db) and connecting to it using the SQL server username and password provided on the CIS portal. Once connected, you can check **“AdditionalInfo”** table for records populated by the Stream Analytics Job (e.g. “select count(*) from AdditionalInfo”). 
 
 #### 2. **Check the results output data from Azure SQL Database**
-The pipeline writes the scored results (e.g. alerts and anomaly scores detected using Machine Learning API) into SQL Database table named **“AdScoreResults”**. *You might have to wait for ~15 minutes for the output data to appear in table.* Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults") which should increase perodically in a functioning solution.
+The pipeline writes the scored results (e.g. alerts and anomaly scores detected using Machine Learning API) into SQL Database table named **“AdScoreResults”**. *You might have to wait for ~15 minutes for the output data to appear in table.* Here, you can query for the number of rows (e.g. "select count(*) from AdScoreResults") which should increase periodically in a functioning solution.
 
 #### 3. **Check Azure Data Factory dashboard.**
 The Azure Data Factory service orchestrates the movement and processing of data. You can access the data factory(ex: demo12345adf) from the resource group on [Azure management portal](https://portal.azure.com/). The data factory datasets will show errors initially if the data is not being streamed to the pipeline. These can be ignored and will go away once the data appears on the input (Refer step 1 above). More info on monitoring and managing the ADF pipeline can be found  [here](https://azure.microsoft.com/en-us/documentation/articles/data-factory-monitor-manage-pipelines/).
@@ -107,8 +107,8 @@ During the deployment a new [Power BI Embedded](https://docs.microsoft.com/en-us
 
 ![The link to provisioned website which displays provisioned Power BI Embedded dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/epbi_website_link.png)
 
-### Step 4 : (optional) Viewing pipline results in Power BI Desktop
-Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on github.  
+### Step 4 : (optional) Viewing pipeline results in Power BI Desktop
+Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on GitHub.  
 
 
 #### Using Power BI template for dashboard<a id="pbi-desktop-setup"/>
@@ -212,7 +212,7 @@ Customers who do not have existing infrastructure are encouraged to try [Azure F
 
 
 ## Using event time
-By default, events are timestamped based on their arrival time to the Event Hub. But in some scenarios, the time at which the event occured might be more useful. For such cases, we can modify the solution to use the time column in the event by simply adding the 'TIMESTAMP BY Time" clause in the Azure Stream Analytics job which processes the input events. For this, make sure that the events have this Time field present and have valid datetime value.
+By default, events are timestamped based on their arrival time to the Event Hub. But in some scenarios, the time at which the event occurred might be more useful. For such cases, we can modify the solution to use the time column in the event by simply adding the 'TIMESTAMP BY Time" clause in the Azure Stream Analytics job which processes the input events. For this, make sure that the events have this Time field present and have valid datetime value.
  
 **Modify Azure Stream Analytics job** 
     
