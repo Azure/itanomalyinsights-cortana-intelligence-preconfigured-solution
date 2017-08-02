@@ -108,7 +108,7 @@ During the deployment a new [Power BI Embedded](https://docs.microsoft.com/en-us
 ![The link to provisioned website which displays provisioned Power BI Embedded dashboard](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/epbi_website_link.png)
 
 ### Step 4 : (optional) Viewing pipeline results in Power BI Desktop
-Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) available on GitHub.  
+Optionally, the data and insights can be visualized in Power BI Desktop using the [PBI template file](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/ItAnomalyInsightsSolutionDashboard.pbix) available on GitHub.  
 
 
 #### Using Power BI template for dashboard<a id="pbi-desktop-setup"/>
