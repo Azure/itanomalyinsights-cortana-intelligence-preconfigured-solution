@@ -119,7 +119,7 @@ This section describes how to set up dashboard in Power BI Desktop to visualize 
 ![SQL Database credentials in deployment summary page](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Docs/figures/SqlServerCredentials.png)
 2) Update the data source of the Power BI file.
  - Make sure you have the latest version of [Power BI desktop](https://powerbi.microsoft.com/desktop) installed.
- - Download the [Power BI template](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/IT%20Anomaly%20Insights%20Solution%20Dashboard.pbix) for the solution. 
+ - Download the [Power BI template](https://github.com/Azure/itanomalyinsights-cortana-intelligence-preconfigured-solution/blob/master/Power-BI-Templates/ItAnomalyInsightsSolutionDashboard.pbix) for the solution. 
  - The initial visualizations are based on sample data. **Note:** If you see an error message, please make sure you have the latest version of Power BI Desktop installed.
  Click **‘Edit Queries’** and choose **‘Data Source Settings’** from the menu.
 
